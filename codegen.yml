@@ -1,0 +1,14 @@
+overwrite: true
+schema: "https://atlas.auspic.es/graph/a460ff84-66e8-4380-aeab-8c0ff0155ddb"
+documents:
+  - pages/**/*.tsx
+  - components/**/*.tsx
+generates:
+  generated/graphql.tsx:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-urql
+    config:
+      withHooks: true
+      dedupeOperationSuffix: true

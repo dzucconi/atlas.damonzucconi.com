@@ -1,19 +1,24 @@
 import { Dropdown, Grid, PaneOption, Stack } from "@auspices/eos";
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
 import { gql } from "urql";
-import { BottomNav } from "../components/core/BottomNav";
-import { Loading } from "../components/core/Loading";
-import { Meta } from "../components/core/Meta";
-import { Pagination } from "../components/core/Pagination";
-import { Thumbnail } from "../components/core/Thumbnail";
-import { useIndexQuery } from "../generated/graphql";
-import { usePagination } from "../lib/usePagination";
+import { BottomNav } from "../../components/core/BottomNav";
+import { Loading } from "../../components/core/Loading";
+import { Meta } from "../../components/core/Meta";
+import { Pagination } from "../../components/core/Pagination";
+import { Thumbnail } from "../../components/core/Thumbnail";
+import { useCollectionQuery } from "../../generated/graphql";
+import { usePagination } from "../../lib/usePagination";
 
-const Home: NextPage = () => {
-  const { page, per } = usePagination();
+const Collection: NextPage = () => {
+  const {
+    query: { collectionId },
+  } = useRouter();
 
-  const [{ fetching, error, data }] = useIndexQuery({
-    variables: { id: "atlas", page, per },
+  const { per, page } = usePagination();
+
+  const [{ fetching, error, data }] = useCollectionQuery({
+    variables: { id: `${collectionId}`, per, page },
   });
 
   if (error) {
@@ -26,7 +31,7 @@ const Home: NextPage = () => {
 
   const {
     root: {
-      collection: { slug, key, title, contents, counts },
+      collection: { key, slug, title, counts, contents },
     },
   } = data;
 
@@ -36,7 +41,7 @@ const Home: NextPage = () => {
 
       <Stack spacing={4}>
         <Stack>
-          <Dropdown label={title} flex={1}>
+          <Dropdown label={title} flex={1} zIndex={2}>
             <PaneOption
               as="a"
               href={`https://glyph.labs.auspic.es/graph/${key}`}
@@ -54,7 +59,12 @@ const Home: NextPage = () => {
             </PaneOption>
           </Dropdown>
 
-          <Pagination page={page} per={per} total={counts.contents} href="/" />
+          <Pagination
+            page={page}
+            per={per}
+            total={counts.contents}
+            href={`/${collectionId}`}
+          />
         </Stack>
 
         <Grid>
@@ -64,7 +74,7 @@ const Home: NextPage = () => {
                 <Thumbnail
                   key={content.id}
                   contentId={content.id}
-                  collectionId={slug}
+                  collectionId={`${collectionId}`}
                   entity={content.entity}
                 />
               );
@@ -72,17 +82,22 @@ const Home: NextPage = () => {
         </Grid>
 
         <BottomNav>
-          <Pagination page={page} per={per} total={counts.contents} href="/" />
+          <Pagination
+            page={page}
+            per={per}
+            total={counts.contents}
+            href={`/${collectionId}`}
+          />
         </BottomNav>
       </Stack>
     </>
   );
 };
 
-export default Home;
+export default Collection;
 
 gql`
-  query IndexQuery($id: ID!, $page: Int, $per: Int) {
+  query CollectionQuery($id: ID!, $page: Int, $per: Int) {
     root: object {
       ... on Collection {
         collection(id: $id) {
