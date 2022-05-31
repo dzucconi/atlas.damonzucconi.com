@@ -247,7 +247,3 @@ export const getStaticProps = buildGetStaticProps((ctx) => [
   COLLECTION_CONTENT_QUERY,
   { id: ctx.params?.id, collectionId: ctx.params?.collectionId },
 ]);
-
-export const getStaticPaths = () => {
-  return { paths: [], fallback: "blocking" };
-};
