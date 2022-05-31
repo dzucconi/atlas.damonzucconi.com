@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { FC } from "react";
 import { gql } from "urql";
 import { Loading } from "../../../components/core/Loading";
-import { Meta } from "../../../components/core/Meta";
+import { Meta, META_IMAGE_FRAGMENT } from "../../../components/core/Meta";
 import { useCollectionContentQuery } from "../../../generated/graphql";
 import { buildGetStaticProps, client, withUrql } from "../../../lib/urql";
 import { usePagination } from "../../../lib/usePagination";
@@ -239,6 +239,7 @@ const COLLECTION_CONTENT_QUERY = gql`
       }
     }
   }
+  ${META_IMAGE_FRAGMENT}
 `;
 
 export default withUrql(Show);
@@ -247,3 +248,7 @@ export const getStaticProps = buildGetStaticProps((ctx) => [
   COLLECTION_CONTENT_QUERY,
   { id: ctx.params?.id, collectionId: ctx.params?.collectionId },
 ]);
+
+export const getStaticPaths = async () => {
+  return { paths: [], fallback: "blocking" };
+};
