@@ -12,10 +12,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { gql } from "urql";
-import { BottomNav } from "../../../components/core/BottomNav";
 import { Loading } from "../../../components/core/Loading";
 import { Meta } from "../../../components/core/Meta";
 import { useCollectionContentQuery } from "../../../generated/graphql";
+import { buildGetStaticProps, client, withUrql } from "../../../lib/urql";
 import { usePagination } from "../../../lib/usePagination";
 
 const Show: FC = () => {
@@ -48,7 +48,12 @@ const Show: FC = () => {
 
   return (
     <>
-      <Meta title={title} />
+      <Meta
+        title={title}
+        {...(entity.__typename === "Image"
+          ? { image: entity.meta.urls.src }
+          : {})}
+      />
 
       <Stack spacing={4}>
         <Stack>
@@ -169,9 +174,7 @@ const Show: FC = () => {
   );
 };
 
-export default Show;
-
-gql`
+const COLLECTION_CONTENT_QUERY = gql`
   query CollectionContentQuery($collectionId: ID!, $id: ID!) {
     root: object {
       ... on Collection {
@@ -209,6 +212,7 @@ gql`
                 name
               }
               ... on Image {
+                ...Meta_image
                 id
                 name: toString(length: 35, from: CENTER)
                 originalUrl: url
@@ -236,3 +240,14 @@ gql`
     }
   }
 `;
+
+export default withUrql(Show);
+
+export const getStaticProps = buildGetStaticProps((ctx) => [
+  COLLECTION_CONTENT_QUERY,
+  { id: ctx.params?.id, collectionId: ctx.params?.collectionId },
+]);
+
+export const getStaticPaths = () => {
+  return { paths: [], fallback: "blocking" };
+};

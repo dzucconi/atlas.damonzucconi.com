@@ -311,7 +311,7 @@ export enum TruncateDirection {
   Tail = 'TAIL'
 }
 
-export type Meta_ImageFragment = { __typename?: 'Image', resized: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } } };
+export type Meta_ImageFragment = { __typename?: 'Image', meta: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } } };
 
 type Thumbnail_Attachment_Fragment = { __typename?: 'Attachment', id: number, url: string, label: string, kind: 'Attachment' };
 
@@ -340,7 +340,7 @@ export type CollectionContentQueryVariables = Exact<{
 }>;
 
 
-export type CollectionContentQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, slug: string, title: string, content: { __typename?: 'Content', id: number, next?: { __typename?: 'Content', id: number } | null, previous?: { __typename?: 'Content', id: number } | null, entity: { __typename: 'Attachment', id: number, name: string } | { __typename: 'Collection', id: number, slug: string, name: string } | { __typename: 'Image', id: number, width: number, height: number, name: string, originalUrl: string, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, resized: { __typename?: 'ResizedImage', width: number, height: number, urls: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename: 'Link', id: number, name: string, url: string } | { __typename: 'Text', id: number, name: string, body: string } } } } };
+export type CollectionContentQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, slug: string, title: string, content: { __typename?: 'Content', id: number, next?: { __typename?: 'Content', id: number } | null, previous?: { __typename?: 'Content', id: number } | null, entity: { __typename: 'Attachment', id: number, name: string } | { __typename: 'Collection', id: number, slug: string, name: string } | { __typename: 'Image', id: number, width: number, height: number, name: string, originalUrl: string, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, resized: { __typename?: 'ResizedImage', width: number, height: number, urls: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } }, meta: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } } } | { __typename: 'Link', id: number, name: string, url: string } | { __typename: 'Text', id: number, name: string, body: string } } } } };
 
 export type IndexQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -353,7 +353,7 @@ export type IndexQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Col
 
 export const Meta_ImageFragmentDoc = gql`
     fragment Meta_image on Image {
-  resized(width: 1200, height: 630) {
+  meta: resized(width: 1200, height: 630) {
     urls {
       src: _1x
     }
@@ -471,6 +471,7 @@ export const CollectionContentQueryDocument = gql`
               name
             }
             ... on Image {
+              ...Meta_image
               id
               name: toString(length: 35, from: CENTER)
               originalUrl: url
@@ -497,7 +498,7 @@ export const CollectionContentQueryDocument = gql`
     }
   }
 }
-    `;
+    ${Meta_ImageFragmentDoc}`;
 
 export function useCollectionContentQuery(options: Omit<Urql.UseQueryArgs<CollectionContentQueryVariables>, 'query'>) {
   return Urql.useQuery<CollectionContentQuery>({ query: CollectionContentQueryDocument, ...options });

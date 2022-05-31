@@ -5,7 +5,7 @@ import { FC } from "react";
 
 export const META_IMAGE_FRAGMENT = gql`
   fragment Meta_image on Image {
-    resized(width: 1200, height: 630) {
+    meta: resized(width: 1200, height: 630) {
       urls {
         src: _1x
       }
