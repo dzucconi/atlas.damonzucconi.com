@@ -148,6 +148,7 @@ const Show: FC = () => {
                     target="_blank"
                   >
                     <ResponsiveImage
+                      key={entity.resized.urls._1x}
                       placeholder={entity.placeholder.urls.src}
                       srcs={[
                         entity.resized.urls._1x,
