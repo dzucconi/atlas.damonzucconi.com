@@ -46,7 +46,7 @@ const App: FC<{ children?: React.ReactNode }> = ({ children }) => {
 
         <Loader />
 
-        <Box p={4}>{children}</Box>
+        <Box p={[0, 2, 4]}>{children}</Box>
 
         <Tooltip label="Invert color scheme" placement="left">
           <Clickable

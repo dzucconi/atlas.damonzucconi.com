@@ -6,6 +6,7 @@ import {
   PaneOption,
   ResponsiveImage,
   Stack,
+  Truncate,
 } from "@auspices/eos";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -51,20 +52,30 @@ const Show: FC = () => {
 
       <Stack spacing={4}>
         <Stack>
-          <Stack direction="horizontal">
-            <Box>
+          <Stack direction={["vertical", "vertical", "horizontal"]}>
+            <Box width={["100%", "100%", "auto"]}>
               <Link
                 href={{ pathname: `/${collectionId}`, query: { page, per } }}
                 passHref
               >
-                <Button as="a">
+                <Button as="a" width="100%">
                   <Caret direction="left" mr={3} />
+
                   {title}
                 </Button>
               </Link>
             </Box>
 
-            <Dropdown label={entity.name} flex={1} zIndex={2}>
+            <Dropdown
+              label={({ open, ...rest }) => (
+                <Button width="100%" {...rest}>
+                  <Truncate title={entity.name}>{entity.name}</Truncate>
+                  <Caret ml={3} direction={open ? "up" : "down"} />
+                </Button>
+              )}
+              flex={1}
+              zIndex={2}
+            >
               {(() => {
                 switch (entity.__typename) {
                   case "Image":
@@ -123,20 +134,29 @@ const Show: FC = () => {
             switch (entity.__typename) {
               case "Image":
                 return (
-                  <ResponsiveImage
-                    placeholder={entity.placeholder.urls.src}
-                    srcs={[
-                      entity.resized.urls._1x,
-                      entity.resized.urls._2x,
-                      entity.resized.urls._3x,
-                    ]}
-                    aspectWidth={entity.resized.width}
-                    aspectHeight={entity.resized.height}
-                    maxWidth={entity.resized.width}
-                    maxHeight={entity.resized.height}
-                    alt={entity.name}
-                    indicator
-                  />
+                  <Box
+                    display="flex"
+                    width="100%"
+                    justifyContent="center"
+                    as="a"
+                    href={entity.originalUrl}
+                    target="_blank"
+                  >
+                    <ResponsiveImage
+                      placeholder={entity.placeholder.urls.src}
+                      srcs={[
+                        entity.resized.urls._1x,
+                        entity.resized.urls._2x,
+                        entity.resized.urls._3x,
+                      ]}
+                      aspectWidth={entity.resized.width}
+                      aspectHeight={entity.resized.height}
+                      maxWidth={entity.resized.width}
+                      maxHeight={entity.resized.height}
+                      alt={entity.name}
+                      indicator
+                    />
+                  </Box>
                 );
 
               default:
