@@ -351,6 +351,27 @@ export type IndexQueryVariables = Exact<{
 
 export type IndexQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, key?: string | null, slug: string, title: string, counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename?: 'Attachment', id: number, url: string, label: string, kind: 'Attachment' } | { __typename?: 'Collection', id: number, slug: string, label: string, kind: 'Collection' } | { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename?: 'Link', id: number, url: string, label: string, kind: 'Link' } | { __typename?: 'Text', id: number, body: string, label: string, kind: 'Text' } }> } } };
 
+export type SlidesQueryVariables = Exact<{
+  id: Scalars['ID'];
+  page?: InputMaybe<Scalars['Int']>;
+  per?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SlidesQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, slug: string, title: string, counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename: 'Attachment' } | { __typename: 'Collection', id: number, slug: string, name: string } | { __typename: 'Image', id: number, name: string, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', _1x: string } }, resized: { __typename?: 'ResizedImage', width: number, height: number, urls: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename: 'Link', id: number, name: string, url: string } | { __typename: 'Text', id: number, name: string, body: string } }> } } };
+
+type Slide_Attachment_Fragment = { __typename: 'Attachment' };
+
+type Slide_Collection_Fragment = { __typename: 'Collection', id: number, slug: string, name: string };
+
+type Slide_Image_Fragment = { __typename: 'Image', id: number, name: string, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', _1x: string } }, resized: { __typename?: 'ResizedImage', width: number, height: number, urls: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } };
+
+type Slide_Link_Fragment = { __typename: 'Link', id: number, name: string, url: string };
+
+type Slide_Text_Fragment = { __typename: 'Text', id: number, name: string, body: string };
+
+export type SlideFragment = Slide_Attachment_Fragment | Slide_Collection_Fragment | Slide_Image_Fragment | Slide_Link_Fragment | Slide_Text_Fragment;
+
 export const Meta_ImageFragmentDoc = gql`
     fragment Meta_image on Image {
   meta: resized(width: 1200, height: 630) {
@@ -398,6 +419,44 @@ export const ThumbnailFragmentDoc = gql`
       width
       height
       srcs: urls {
+        _1x
+        _2x
+        _3x
+      }
+    }
+  }
+}
+    `;
+export const SlideFragmentDoc = gql`
+    fragment Slide on Entity {
+  __typename
+  ... on Text {
+    id
+    name
+    body
+  }
+  ... on Link {
+    id
+    name
+    url
+  }
+  ... on Collection {
+    id
+    slug
+    name
+  }
+  ... on Image {
+    id
+    name
+    placeholder: resized(width: 50, height: 50, blur: 10) {
+      urls {
+        _1x
+      }
+    }
+    resized(width: 1400, height: 1400) {
+      width
+      height
+      urls {
         _1x
         _2x
         _3x
@@ -529,4 +588,30 @@ export const IndexQueryDocument = gql`
 
 export function useIndexQuery(options: Omit<Urql.UseQueryArgs<IndexQueryVariables>, 'query'>) {
   return Urql.useQuery<IndexQuery>({ query: IndexQueryDocument, ...options });
+};
+export const SlidesQueryDocument = gql`
+    query SlidesQuery($id: ID!, $page: Int, $per: Int) {
+  root: object {
+    ... on Collection {
+      collection(id: $id) {
+        id
+        slug
+        title
+        counts {
+          contents
+        }
+        contents(page: $page, per: $per) {
+          id
+          entity {
+            ...Slide
+          }
+        }
+      }
+    }
+  }
+}
+    ${SlideFragmentDoc}`;
+
+export function useSlidesQuery(options: Omit<Urql.UseQueryArgs<SlidesQueryVariables>, 'query'>) {
+  return Urql.useQuery<SlidesQuery>({ query: SlidesQueryDocument, ...options });
 };

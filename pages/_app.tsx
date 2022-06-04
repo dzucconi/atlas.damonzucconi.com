@@ -48,7 +48,7 @@ const App: FC<{ children?: React.ReactNode }> = ({ children }) => {
 
         <Box p={[0, 2, 4]}>{children}</Box>
 
-        <Tooltip label="Invert color scheme" placement="left">
+        {/* <Tooltip label="Invert color scheme" placement="left">
           <Clickable
             position="fixed"
             bottom={0}
@@ -60,7 +60,7 @@ const App: FC<{ children?: React.ReactNode }> = ({ children }) => {
           >
             <Box width={10} height={10} bg="primary" borderRadius="50%" />
           </Clickable>
-        </Tooltip>
+        </Tooltip> */}
       </ThemeProvider>
     </>
   );

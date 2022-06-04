@@ -20,7 +20,8 @@
     "styled-components": "^5.3.5",
     "styled-reset": "^4.4.1",
     "styled-system": "^5.1.5",
-    "urql": "^2.2.0"
+    "urql": "^2.2.0",
+    "use-cursor": "^1.2.3"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.6.2",
