@@ -16,23 +16,12 @@ const Collection: NextPage = () => {
     isReady,
   } = useRouter();
 
-  if (!isReady) {
-    return <Loading />;
-  }
-
-  return <Page collectionId={`${collectionId}`} />;
-};
-
-const Page = ({ collectionId }: { collectionId: string }) => {
   const { per, page } = usePagination();
 
   const [{ fetching, error, data }] = useCollectionQuery({
-    variables: { id: collectionId, per, page },
+    variables: { id: `${collectionId}`, per, page },
+    pause: !isReady,
   });
-
-  if (!collectionId) {
-    return null;
-  }
 
   if (error) {
     throw error;
