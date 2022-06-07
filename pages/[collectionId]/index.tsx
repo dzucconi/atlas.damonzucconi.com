@@ -13,13 +13,26 @@ import { usePagination } from "../../lib/usePagination";
 const Collection: NextPage = () => {
   const {
     query: { collectionId },
+    isReady,
   } = useRouter();
 
+  if (!isReady) {
+    return <Loading />;
+  }
+
+  return <Page collectionId={`${collectionId}`} />;
+};
+
+const Page = ({ collectionId }: { collectionId: string }) => {
   const { per, page } = usePagination();
 
   const [{ fetching, error, data }] = useCollectionQuery({
-    variables: { id: `${collectionId}`, per, page },
+    variables: { id: collectionId, per, page },
   });
+
+  if (!collectionId) {
+    return null;
+  }
 
   if (error) {
     throw error;
