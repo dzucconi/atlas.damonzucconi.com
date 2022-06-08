@@ -101,3 +101,5 @@ export const SLIDE_FRAGMENT = gql`
     }
   }
 `;
+
+export default Slide;
