@@ -2,7 +2,10 @@ import {
   Box,
   Button,
   Caret,
+  Cell,
   Dropdown,
+  HTML,
+  Input,
   PaneOption,
   ResponsiveImage,
   Stack,
@@ -15,6 +18,7 @@ import { gql } from "urql";
 import { Loading } from "../../../components/core/Loading";
 import { Meta, META_IMAGE_FRAGMENT } from "../../../components/core/Meta";
 import { useCollectionContentQuery } from "../../../generated/graphql";
+import { simpleFormat } from "../../../lib/simpleFormat";
 import { buildGetStaticProps, client, withUrql } from "../../../lib/urql";
 import { usePagination } from "../../../lib/usePagination";
 
@@ -96,8 +100,19 @@ const Show: FC = () => {
                       </PaneOption>
                     );
 
+                  case "Text":
+                    return (
+                      <PaneOption
+                        as="a"
+                        href={`https://www.google.com/search?q=${entity.body}`}
+                        target="_blank"
+                      >
+                        search for {entity.name}
+                      </PaneOption>
+                    );
+
                   default:
-                    return <PaneOption>TODO</PaneOption>;
+                    return null;
                 }
               })()}
             </Dropdown>
@@ -167,6 +182,13 @@ const Show: FC = () => {
                   </Box>
                 );
 
+              case "Text":
+                return (
+                  <Cell borderWidth={0} width="100%">
+                    <HTML html={simpleFormat(entity.body)} />
+                  </Cell>
+                );
+
               default:
                 return <div>TODO</div>;
             }
@@ -201,7 +223,7 @@ const COLLECTION_CONTENT_QUERY = gql`
               }
               ... on Text {
                 id
-                name
+                name: toString(length: 35, from: TAIL)
                 body
               }
               ... on Link {
@@ -255,3 +277,14 @@ export const getStaticProps = buildGetStaticProps((ctx) => [
 export const getStaticPaths = async () => {
   return { paths: [], fallback: "blocking" };
 };
+
+// const Editor = styled(Input).attrs({
+//   flex: 1,
+//   p: 6,
+//   borderWidth: 0,
+// })`
+//   resize: none;
+//   &:focus {
+//     box-shadow: none;
+//   }
+// `

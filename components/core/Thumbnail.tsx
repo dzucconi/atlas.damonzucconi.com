@@ -35,6 +35,7 @@ export const Thumbnail: FC<ThumbnailProps> = ({
       case "Collection":
         return `/${entity.slug}`;
       case "Link":
+      case "Attachment":
         return entity.url;
       default:
         return {

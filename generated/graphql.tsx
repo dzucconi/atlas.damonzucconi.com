@@ -311,6 +311,18 @@ export enum TruncateDirection {
   Tail = 'TAIL'
 }
 
+type Slide_Attachment_Fragment = { __typename: 'Attachment' };
+
+type Slide_Collection_Fragment = { __typename: 'Collection', id: number, slug: string, name: string };
+
+type Slide_Image_Fragment = { __typename: 'Image', id: number, name: string, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', _1x: string } }, resized: { __typename?: 'ResizedImage', width: number, height: number, urls: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } };
+
+type Slide_Link_Fragment = { __typename: 'Link', id: number, name: string, url: string };
+
+type Slide_Text_Fragment = { __typename: 'Text', id: number, name: string, body: string };
+
+export type SlideFragment = Slide_Attachment_Fragment | Slide_Collection_Fragment | Slide_Image_Fragment | Slide_Link_Fragment | Slide_Text_Fragment;
+
 export type Meta_ImageFragment = { __typename?: 'Image', meta: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } } };
 
 type Thumbnail_Attachment_Fragment = { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' };
@@ -340,7 +352,7 @@ export type CollectionContentQueryVariables = Exact<{
 }>;
 
 
-export type CollectionContentQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, slug: string, title: string, content: { __typename?: 'Content', id: number, next?: { __typename?: 'Content', id: number } | null, previous?: { __typename?: 'Content', id: number } | null, entity: { __typename: 'Attachment', id: number, name: string } | { __typename: 'Collection', id: number, slug: string, name: string } | { __typename: 'Image', id: number, width: number, height: number, name: string, originalUrl: string, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, resized: { __typename?: 'ResizedImage', width: number, height: number, urls: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } }, meta: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } } } | { __typename: 'Link', id: number, name: string, url: string } | { __typename: 'Text', id: number, name: string, body: string } } } } };
+export type CollectionContentQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, slug: string, title: string, content: { __typename?: 'Content', id: number, next?: { __typename?: 'Content', id: number } | null, previous?: { __typename?: 'Content', id: number } | null, entity: { __typename: 'Attachment', id: number, name: string } | { __typename: 'Collection', id: number, slug: string, name: string } | { __typename: 'Image', id: number, width: number, height: number, name: string, originalUrl: string, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, resized: { __typename?: 'ResizedImage', width: number, height: number, urls: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } }, meta: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } } } | { __typename: 'Link', id: number, name: string, url: string } | { __typename: 'Text', id: number, body: string, name: string } } } } };
 
 export type IndexQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -360,18 +372,44 @@ export type SlidesQueryVariables = Exact<{
 
 export type SlidesQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, slug: string, title: string, counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename: 'Attachment' } | { __typename: 'Collection', id: number, slug: string, name: string } | { __typename: 'Image', id: number, name: string, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', _1x: string } }, resized: { __typename?: 'ResizedImage', width: number, height: number, urls: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename: 'Link', id: number, name: string, url: string } | { __typename: 'Text', id: number, name: string, body: string } }> } } };
 
-type Slide_Attachment_Fragment = { __typename: 'Attachment' };
-
-type Slide_Collection_Fragment = { __typename: 'Collection', id: number, slug: string, name: string };
-
-type Slide_Image_Fragment = { __typename: 'Image', id: number, name: string, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', _1x: string } }, resized: { __typename?: 'ResizedImage', width: number, height: number, urls: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } };
-
-type Slide_Link_Fragment = { __typename: 'Link', id: number, name: string, url: string };
-
-type Slide_Text_Fragment = { __typename: 'Text', id: number, name: string, body: string };
-
-export type SlideFragment = Slide_Attachment_Fragment | Slide_Collection_Fragment | Slide_Image_Fragment | Slide_Link_Fragment | Slide_Text_Fragment;
-
+export const SlideFragmentDoc = gql`
+    fragment Slide on Entity {
+  __typename
+  ... on Text {
+    id
+    name
+    body
+  }
+  ... on Link {
+    id
+    name
+    url
+  }
+  ... on Collection {
+    id
+    slug
+    name
+  }
+  ... on Image {
+    id
+    name
+    placeholder: resized(width: 50, height: 50, blur: 10) {
+      urls {
+        _1x
+      }
+    }
+    resized(width: 2000, height: 2000) {
+      width
+      height
+      urls {
+        _1x
+        _2x
+        _3x
+      }
+    }
+  }
+}
+    `;
 export const Meta_ImageFragmentDoc = gql`
     fragment Meta_image on Image {
   meta: resized(width: 1200, height: 630) {
@@ -433,44 +471,6 @@ export const ThumbnailFragmentDoc = gql`
   }
 }
     `;
-export const SlideFragmentDoc = gql`
-    fragment Slide on Entity {
-  __typename
-  ... on Text {
-    id
-    name
-    body
-  }
-  ... on Link {
-    id
-    name
-    url
-  }
-  ... on Collection {
-    id
-    slug
-    name
-  }
-  ... on Image {
-    id
-    name
-    placeholder: resized(width: 50, height: 50, blur: 10) {
-      urls {
-        _1x
-      }
-    }
-    resized(width: 2000, height: 2000) {
-      width
-      height
-      urls {
-        _1x
-        _2x
-        _3x
-      }
-    }
-  }
-}
-    `;
 export const CollectionQueryDocument = gql`
     query CollectionQuery($id: ID!, $page: Int, $per: Int) {
   root: object {
@@ -522,7 +522,7 @@ export const CollectionContentQueryDocument = gql`
             }
             ... on Text {
               id
-              name
+              name: toString(length: 35, from: TAIL)
               body
             }
             ... on Link {

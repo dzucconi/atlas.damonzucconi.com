@@ -26,7 +26,7 @@ const Slides = () => {
   const [page, setPage] = useState(1);
 
   const [{ data, fetching, error }] = useSlidesQuery({
-    variables: { id: `${collectionId}`, per: 3, page },
+    variables: { id: `${collectionId}`, per: 25, page },
     pause: !isReady,
   });
 
