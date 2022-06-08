@@ -30,7 +30,7 @@ export const Slide: FC<SlideProps> = ({ entity, onReady }) => {
       return (
         <Box
           key={entity.resized.urls._1x}
-          position="fixed"
+          position="absolute"
           top={0}
           right={0}
           bottom={0}
@@ -89,7 +89,7 @@ export const SLIDE_FRAGMENT = gql`
           _1x
         }
       }
-      resized(width: 1400, height: 1400) {
+      resized(width: 2000, height: 2000) {
         width
         height
         urls {

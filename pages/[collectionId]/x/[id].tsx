@@ -21,10 +21,12 @@ import { usePagination } from "../../../lib/usePagination";
 const Show: FC = () => {
   const {
     query: { collectionId, id },
+    isReady,
   } = useRouter();
 
-  const [{ data, fetching, error }] = useCollectionContentQuery({
+  const [{ data, fetching, error }, executeQuery] = useCollectionContentQuery({
     variables: { collectionId: `${collectionId}`, id: `${id}` },
+    pause: !isReady,
   });
 
   const { page, per } = usePagination();
