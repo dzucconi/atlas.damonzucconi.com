@@ -1,9 +1,10 @@
 import { gql } from "urql";
 import { Box, File, ResponsiveImage } from "@auspices/eos";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { ThumbnailFragment } from "../../generated/graphql";
 import Link from "next/link";
 import { usePagination } from "../../lib/usePagination";
+import { FadeOut } from "./FadeOut";
 
 type ThumbnailProps = {
   collectionId: string;
@@ -18,26 +19,38 @@ export const Thumbnail: FC<ThumbnailProps> = ({
 }) => {
   const { page, per } = usePagination();
 
+  const meta = useMemo(() => {
+    switch (entity.__typename) {
+      case "Image":
+        return `${entity.width}×${entity.height}`;
+      case "Collection":
+        return entity.updatedAt;
+      default:
+        return null;
+    }
+  }, [entity]);
+
+  const href = useMemo(() => {
+    switch (entity.__typename) {
+      case "Collection":
+        return `/${entity.slug}`;
+      case "Link":
+        return entity.url;
+      default:
+        return {
+          pathname: `/${collectionId}/x/${contentId}`,
+          query: { page, per },
+        };
+    }
+  }, [collectionId, contentId, entity, page, per]);
+
   return (
-    <Link
-      href={{
-        pathname: `/${collectionId}/x/${contentId}`,
-        query: { page, per },
-      }}
-      passHref
-    >
+    <Link passHref href={href}>
       <Box as="a" width="100%" position="relative">
         <File
           position="static"
           name={entity.label}
-          meta={(() => {
-            switch (entity.__typename) {
-              case "Image":
-                return `${entity.width}×${entity.height}`;
-              default:
-                return "TODO";
-            }
-          })()}
+          meta={meta}
           cursor="pointer"
         >
           {(() => {
@@ -60,8 +73,106 @@ export const Thumbnail: FC<ThumbnailProps> = ({
                   />
                 );
 
+              case "Link":
+                return (
+                  <Box
+                    border="1px solid"
+                    borderColor="external"
+                    borderRadius={4}
+                    color="external"
+                    fontSize={0}
+                    height="100%"
+                    width="100%"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="flex-end"
+                  >
+                    <Box
+                      px={4}
+                      py={3}
+                      borderTop="1px solid"
+                      borderColor="external"
+                    >
+                      {entity.label}
+                    </Box>
+                  </Box>
+                );
+
+              case "Text":
+                return (
+                  <Box
+                    fontSize={0}
+                    border="1px solid"
+                    borderColor="hint"
+                    borderRadius={2}
+                    color="primary"
+                    py={2}
+                    px={3}
+                    position="relative"
+                    display="flex"
+                    alignItems="flex-start"
+                    justifyContent="flex-start"
+                    width="100%"
+                    height="100%"
+                    style={{ whiteSpace: "pre-wrap" }}
+                  >
+                    {entity.blurb.length > 500 ? (
+                      <FadeOut>{entity.blurb}</FadeOut>
+                    ) : (
+                      <>{entity.blurb}</>
+                    )}
+                  </Box>
+                );
+
+              case "Attachment":
+                return (
+                  <Box
+                    border="1px solid"
+                    borderColor="secondary"
+                    borderRadius={4}
+                    color="primary"
+                    fontSize={0}
+                    height="100%"
+                    width="100%"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="flex-start"
+                  >
+                    <Box
+                      px={4}
+                      py={3}
+                      borderBottom="1px solid"
+                      borderColor="secondary"
+                      color="secondary"
+                    >
+                      {entity.contentType} ({entity.fileSize})
+                    </Box>
+                  </Box>
+                );
+
+              case "Collection":
+                return (
+                  <Box
+                    border="1px solid"
+                    borderColor="border"
+                    borderRadius={4}
+                    color="primary"
+                    height="100%"
+                    width="100%"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="flex-start"
+                    py={3}
+                    px={4}
+                  >
+                    <Box>{entity.label}</Box>
+
+                    <Box color="tertiary">{entity.counts.contents || "∅"}</Box>
+                  </Box>
+                );
+
               default:
-                return <div>TODO</div>;
+                return <div>{entity.__typename}</div>;
             }
           })()}
         </File>
@@ -76,22 +187,28 @@ gql`
     ... on Text {
       id
       label: toString(length: 35, from: TAIL)
-      body
+      blurb: toString(length: 800)
     }
     ... on Attachment {
       id
       label: toString(length: 35, from: CENTER)
       url
+      fileSize
+      contentType
     }
     ... on Link {
       id
-      label: toString(length: 35, from: CENTER)
+      label: toString(length: 30, from: CENTER)
       url
     }
     ... on Collection {
       id
       slug
       label: toString(length: 35, from: CENTER)
+      updatedAt(relative: true)
+      counts {
+        contents
+      }
     }
     ... on Image {
       id

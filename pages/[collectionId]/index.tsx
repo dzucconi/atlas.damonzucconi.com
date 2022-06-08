@@ -1,5 +1,6 @@
 import { Dropdown, Grid, PaneOption, Stack } from "@auspices/eos";
 import type { NextPage } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { gql } from "urql";
 import { BottomNav } from "../../components/core/BottomNav";
@@ -57,8 +58,12 @@ const Collection: NextPage = () => {
               href={`https://auspic.es/xs/${slug}`}
               target="_blank"
             >
-              open in Auspic.es
+              open in auspic.es
             </PaneOption>
+
+            <Link href={`/slides/${slug}`} passHref>
+              <PaneOption as="a">view as slides</PaneOption>
+            </Link>
           </Dropdown>
 
           <Pagination
@@ -71,15 +76,14 @@ const Collection: NextPage = () => {
 
         <Grid>
           {contents.map((content) => {
-            if (content.entity.kind === "Image")
-              return (
-                <Thumbnail
-                  key={content.id}
-                  contentId={content.id}
-                  collectionId={`${collectionId}`}
-                  entity={content.entity}
-                />
-              );
+            return (
+              <Thumbnail
+                key={content.id}
+                contentId={content.id}
+                collectionId={`${collectionId}`}
+                entity={content.entity}
+              />
+            );
           })}
         </Grid>
 
