@@ -2,10 +2,10 @@ import { gql } from "urql";
 import { useRouter } from "next/router";
 import { useSlidesQuery } from "../../generated/graphql";
 import { Loading } from "../../components/core/Loading";
-import { Box, Clickable, color } from "@auspices/eos";
+import { Box, Clickable } from "@auspices/eos";
 import { useCursor } from "use-cursor";
 import styled, { createGlobalStyle, css, keyframes } from "styled-components";
-import { Slide } from "./components/slide";
+import { Slide } from "../../components/components/Slide";
 import { wait } from "../../lib/wait";
 import { useEffect, useState } from "react";
 

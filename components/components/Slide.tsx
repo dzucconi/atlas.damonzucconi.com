@@ -1,7 +1,7 @@
 import { Image, Box } from "@auspices/eos";
 import { FC, useEffect, useRef } from "react";
 import { gql } from "urql";
-import { SlideFragment } from "../../../generated/graphql";
+import { SlideFragment } from "../../generated/graphql";
 
 interface SlideProps {
   entity: SlideFragment;
@@ -101,5 +101,3 @@ export const SLIDE_FRAGMENT = gql`
     }
   }
 `;
-
-export default Slide;
