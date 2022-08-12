@@ -1,26 +1,30 @@
-import { Dropdown, Grid, PaneOption, Stack } from "@auspices/eos";
+import { Dropdown, PaneOption, Stack } from "@auspices/eos";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { gql } from "urql";
-import { BottomNav } from "../../components/core/BottomNav";
+import { DefinitionList } from "../../components/core/DefinitionList";
+import { Inline } from "../../components/components/Inline";
 import { Loading } from "../../components/core/Loading";
 import { Meta } from "../../components/core/Meta";
 import { Pagination } from "../../components/core/Pagination";
-import { Thumbnail } from "../../components/core/Thumbnail";
-import { useCollectionQuery } from "../../generated/graphql";
-import { usePagination } from "../../lib/usePagination";
+import { usePageQuery } from "../../generated/graphql";
 
-const Collection: NextPage = () => {
+const Page: NextPage = () => {
   const {
-    query: { collectionId },
+    query: { collectionId, page: _page = 1, per: _per = 100 },
     isReady,
   } = useRouter();
 
-  const { per, page } = usePagination();
+  const per = parseInt(_per as string, 10);
+  const page = parseInt(_page as string, 10);
 
-  const [{ fetching, error, data }] = useCollectionQuery({
-    variables: { id: `${collectionId}`, per, page },
+  const [{ fetching, error, data }] = usePageQuery({
+    variables: {
+      id: `${collectionId}`,
+      per,
+      page,
+    },
     pause: !isReady,
   });
 
@@ -42,7 +46,7 @@ const Collection: NextPage = () => {
     <>
       <Meta title={title} />
 
-      <Stack spacing={4}>
+      <Stack spacing={8}>
         <Stack>
           <Dropdown label={title} flex={1} zIndex={2}>
             {key && (
@@ -68,40 +72,47 @@ const Collection: NextPage = () => {
             page={page}
             per={per}
             total={counts.contents}
-            href={`/${collectionId}`}
+            href={`/page/${collectionId}`}
           />
         </Stack>
 
-        <Grid>
+        <Stack spacing={8}>
           {contents.map((content) => {
             return (
-              <Thumbnail
-                key={content.id}
-                contentId={content.id}
-                collectionId={`${collectionId}`}
-                entity={content.entity}
-              />
+              <Stack key={content.id} spacing={5}>
+                <Inline entity={content.entity} />
+
+                {content.metadata && (
+                  <DefinitionList
+                    mx="auto"
+                    definitions={Object.entries(content.metadata).map(
+                      ([term, definition]) => ({
+                        term,
+                        definition: `${definition}`,
+                      })
+                    )}
+                  />
+                )}
+              </Stack>
             );
           })}
-        </Grid>
+        </Stack>
 
-        <BottomNav>
-          <Pagination
-            page={page}
-            per={per}
-            total={counts.contents}
-            href={`/${collectionId}`}
-          />
-        </BottomNav>
+        <Pagination
+          page={page}
+          per={per}
+          total={counts.contents}
+          href={`/page/${collectionId}`}
+        />
       </Stack>
     </>
   );
 };
 
-export default Collection;
+export default Page;
 
 gql`
-  query CollectionQuery($id: ID!, $page: Int, $per: Int) {
+  query PageQuery($id: ID!, $page: Int, $per: Int) {
     root: object {
       ... on Collection {
         collection(id: $id) {
@@ -114,8 +125,9 @@ gql`
           }
           contents(page: $page, per: $per) {
             id
+            metadata
             entity {
-              ...Thumbnail
+              ...Inline
             }
           }
         }

@@ -13,7 +13,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** Represents untyped JSON */
   JSON: any;
 };
 
@@ -207,6 +206,7 @@ export type ImageCreatedAtArgs = {
 
 export type ImageResizedArgs = {
   blur?: InputMaybe<Scalars['Int']>;
+  fit?: InputMaybe<ResizedImageFit>;
   height?: InputMaybe<Scalars['Int']>;
   quality?: InputMaybe<Scalars['Int']>;
   scale?: InputMaybe<Scalars['Float']>;
@@ -254,11 +254,9 @@ export type LinkUpdatedAtArgs = {
   relative?: InputMaybe<Scalars['Boolean']>;
 };
 
-export type Object = Collection;
-
 export type ObjectQuery = {
   __typename?: 'ObjectQuery';
-  object: Object;
+  object: Collection;
 };
 
 export type ResizedImage = {
@@ -268,6 +266,11 @@ export type ResizedImage = {
   urls: RetinaImage;
   width: Scalars['Int'];
 };
+
+export enum ResizedImageFit {
+  Cover = 'COVER',
+  Inside = 'INSIDE'
+}
 
 export type RetinaImage = {
   __typename?: 'RetinaImage';
@@ -310,6 +313,18 @@ export enum TruncateDirection {
   Head = 'HEAD',
   Tail = 'TAIL'
 }
+
+type Inline_Attachment_Fragment = { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' };
+
+type Inline_Collection_Fragment = { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number } };
+
+type Inline_Image_Fragment = { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } };
+
+type Inline_Link_Fragment = { __typename?: 'Link', id: number, url: string, label: string, kind: 'Link' };
+
+type Inline_Text_Fragment = { __typename?: 'Text', id: number, body: string, label: string, kind: 'Text' };
+
+export type InlineFragment = Inline_Attachment_Fragment | Inline_Collection_Fragment | Inline_Image_Fragment | Inline_Link_Fragment | Inline_Text_Fragment;
 
 type Slide_Attachment_Fragment = { __typename: 'Attachment' };
 
@@ -363,6 +378,15 @@ export type IndexQueryVariables = Exact<{
 
 export type IndexQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, key?: string | null, slug: string, title: string, counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' } | { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number } } | { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename?: 'Link', id: number, url: string, label: string, kind: 'Link' } | { __typename?: 'Text', id: number, label: string, blurb: string, kind: 'Text' } }> } } };
 
+export type PageQueryVariables = Exact<{
+  id: Scalars['ID'];
+  page?: InputMaybe<Scalars['Int']>;
+  per?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type PageQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, key?: string | null, slug: string, title: string, counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, metadata: any, entity: { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' } | { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number } } | { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename?: 'Link', id: number, url: string, label: string, kind: 'Link' } | { __typename?: 'Text', id: number, body: string, label: string, kind: 'Text' } }> } } };
+
 export type SlidesQueryVariables = Exact<{
   id: Scalars['ID'];
   page?: InputMaybe<Scalars['Int']>;
@@ -372,6 +396,58 @@ export type SlidesQueryVariables = Exact<{
 
 export type SlidesQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, slug: string, title: string, counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename: 'Attachment' } | { __typename: 'Collection', id: number, slug: string, name: string } | { __typename: 'Image', id: number, name: string, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', _1x: string } }, resized: { __typename?: 'ResizedImage', width: number, height: number, urls: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename: 'Link', id: number, name: string, url: string } | { __typename: 'Text', id: number, name: string, body: string } }> } } };
 
+export const InlineFragmentDoc = gql`
+    fragment Inline on Entity {
+  kind: __typename
+  ... on Text {
+    id
+    label: toString(length: 35, from: TAIL)
+    body
+  }
+  ... on Attachment {
+    id
+    label: toString(length: 35, from: CENTER)
+    url
+    fileSize
+    contentType
+  }
+  ... on Link {
+    id
+    label: toString(length: 30, from: CENTER)
+    url
+  }
+  ... on Collection {
+    id
+    slug
+    label: toString(length: 35, from: CENTER)
+    updatedAt(relative: true)
+    counts {
+      contents
+    }
+  }
+  ... on Image {
+    id
+    width
+    height
+    label: toString(length: 35, from: CENTER)
+    url
+    placeholder: resized(width: 50, height: 50, blur: 10) {
+      urls {
+        src: _1x
+      }
+    }
+    thumb: resized(width: 1200, height: 1200, quality: 85) {
+      width
+      height
+      srcs: urls {
+        _1x
+        _2x
+        _3x
+      }
+    }
+  }
+}
+    `;
 export const SlideFragmentDoc = gql`
     fragment Slide on Entity {
   __typename
@@ -496,7 +572,7 @@ export const CollectionQueryDocument = gql`
     ${ThumbnailFragmentDoc}`;
 
 export function useCollectionQuery(options: Omit<Urql.UseQueryArgs<CollectionQueryVariables>, 'query'>) {
-  return Urql.useQuery<CollectionQuery>({ query: CollectionQueryDocument, ...options });
+  return Urql.useQuery<CollectionQuery, CollectionQueryVariables>({ query: CollectionQueryDocument, ...options });
 };
 export const CollectionContentQueryDocument = gql`
     query CollectionContentQuery($collectionId: ID!, $id: ID!) {
@@ -566,7 +642,7 @@ export const CollectionContentQueryDocument = gql`
     ${Meta_ImageFragmentDoc}`;
 
 export function useCollectionContentQuery(options: Omit<Urql.UseQueryArgs<CollectionContentQueryVariables>, 'query'>) {
-  return Urql.useQuery<CollectionContentQuery>({ query: CollectionContentQueryDocument, ...options });
+  return Urql.useQuery<CollectionContentQuery, CollectionContentQueryVariables>({ query: CollectionContentQueryDocument, ...options });
 };
 export const IndexQueryDocument = gql`
     query IndexQuery($id: ID!, $page: Int, $per: Int) {
@@ -593,7 +669,35 @@ export const IndexQueryDocument = gql`
     ${ThumbnailFragmentDoc}`;
 
 export function useIndexQuery(options: Omit<Urql.UseQueryArgs<IndexQueryVariables>, 'query'>) {
-  return Urql.useQuery<IndexQuery>({ query: IndexQueryDocument, ...options });
+  return Urql.useQuery<IndexQuery, IndexQueryVariables>({ query: IndexQueryDocument, ...options });
+};
+export const PageQueryDocument = gql`
+    query PageQuery($id: ID!, $page: Int, $per: Int) {
+  root: object {
+    ... on Collection {
+      collection(id: $id) {
+        id
+        key
+        slug
+        title
+        counts {
+          contents
+        }
+        contents(page: $page, per: $per) {
+          id
+          metadata
+          entity {
+            ...Inline
+          }
+        }
+      }
+    }
+  }
+}
+    ${InlineFragmentDoc}`;
+
+export function usePageQuery(options: Omit<Urql.UseQueryArgs<PageQueryVariables>, 'query'>) {
+  return Urql.useQuery<PageQuery, PageQueryVariables>({ query: PageQueryDocument, ...options });
 };
 export const SlidesQueryDocument = gql`
     query SlidesQuery($id: ID!, $page: Int, $per: Int) {
@@ -619,5 +723,5 @@ export const SlidesQueryDocument = gql`
     ${SlideFragmentDoc}`;
 
 export function useSlidesQuery(options: Omit<Urql.UseQueryArgs<SlidesQueryVariables>, 'query'>) {
-  return Urql.useQuery<SlidesQuery>({ query: SlidesQueryDocument, ...options });
+  return Urql.useQuery<SlidesQuery, SlidesQueryVariables>({ query: SlidesQueryDocument, ...options });
 };
