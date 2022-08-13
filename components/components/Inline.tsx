@@ -1,10 +1,17 @@
 import { gql } from "urql";
-import { Box, BoxProps, File, HTML, ResponsiveImage } from "@auspices/eos";
+import {
+  Box,
+  BoxProps,
+  File,
+  Grid,
+  HTML,
+  ResponsiveImage,
+  Stack,
+} from "@auspices/eos";
 import { FC, useMemo } from "react";
 import { InlineFragment } from "../../generated/graphql";
-import { FadeOut } from "../core/FadeOut";
-import Link from "next/link";
 import { simpleFormat } from "../../lib/simpleFormat";
+import { Thumbnail } from "../core/Thumbnail";
 
 type InlineProps = BoxProps & {
   entity: InlineFragment;
@@ -120,12 +127,52 @@ export const Inline: FC<InlineProps> = ({ entity, ...rest }) => {
                 display="flex"
                 flexDirection="column"
                 justifyContent="flex-start"
-                py={3}
+                pt={3}
                 px={4}
+                pb={6}
               >
-                <Box>{entity.label}</Box>
+                <Stack spacing={6}>
+                  <Box>
+                    <Box>{entity.label}</Box>
 
-                <Box color="tertiary">{entity.counts.contents || "∅"}</Box>
+                    <Box color="tertiary">{entity.counts.contents || "∅"}</Box>
+                  </Box>
+
+                  <Grid>
+                    {entity.contents.map((content) => {
+                      return (
+                        <Thumbnail
+                          key={content.id}
+                          contentId={content.id}
+                          collectionId={`${entity.id}`}
+                          entity={content.entity}
+                        />
+                      );
+                    })}
+
+                    <File>
+                      <Box
+                        border="1px solid"
+                        borderColor="hint"
+                        borderRadius={2}
+                        color="primary"
+                        py={2}
+                        px={3}
+                        position="relative"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        width="100%"
+                        height="100%"
+                      >
+                        View{" "}
+                        {entity.counts.contents - 25 < 0
+                          ? "all"
+                          : `${entity.counts.contents - 25} more`}
+                      </Box>
+                    </File>
+                  </Grid>
+                </Stack>
               </Box>
             );
 
@@ -164,6 +211,12 @@ gql`
       updatedAt(relative: true)
       counts {
         contents
+      }
+      contents(per: 25) {
+        id
+        entity {
+          ...Thumbnail
+        }
       }
     }
     ... on Image {

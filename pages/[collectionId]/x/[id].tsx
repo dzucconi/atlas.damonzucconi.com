@@ -19,7 +19,7 @@ import { Loading } from "../../../components/core/Loading";
 import { Meta, META_IMAGE_FRAGMENT } from "../../../components/core/Meta";
 import { useCollectionContentQuery } from "../../../generated/graphql";
 import { simpleFormat } from "../../../lib/simpleFormat";
-import { buildGetStaticProps, client, withUrql } from "../../../lib/urql";
+import { buildGetStaticProps, withUrql } from "../../../lib/urql";
 import { usePagination } from "../../../lib/usePagination";
 
 const Show: FC = () => {
@@ -28,7 +28,7 @@ const Show: FC = () => {
     isReady,
   } = useRouter();
 
-  const [{ data, fetching, error }, executeQuery] = useCollectionContentQuery({
+  const [{ data, fetching, error }] = useCollectionContentQuery({
     variables: { collectionId: `${collectionId}`, id: `${id}` },
     pause: !isReady,
   });
