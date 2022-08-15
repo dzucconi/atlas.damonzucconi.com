@@ -1,8 +1,8 @@
 import { Box, Grid, File, BoxProps } from "@auspices/eos";
+import Link from "next/link";
 import { FC } from "react";
 import { gql } from "urql";
 import { InlineCollectionFragment } from "../../generated/graphql";
-import { useClientSidePagination } from "../../lib/useClientSidePagination";
 import { Thumbnail } from "../core/Thumbnail";
 
 type InlineCollectionProps = BoxProps & {
@@ -13,14 +13,10 @@ export const InlineCollection: FC<InlineCollectionProps> = ({
   collection,
   ...rest
 }) => {
-  const { containerRef, elementRef, page, per } = useClientSidePagination({
-    rows: 3,
-  });
-
   return (
-    <Box ref={containerRef} {...rest}>
+    <Box {...rest}>
       <Grid>
-        {collection.contents.map((content, i) => {
+        {collection.contents.map((content) => {
           return (
             <Thumbnail
               key={content.id}
@@ -31,29 +27,31 @@ export const InlineCollection: FC<InlineCollectionProps> = ({
           );
         })}
 
-        <Box ref={elementRef} width="100%">
-          <File>
-            <Box
-              border="1px solid"
-              borderColor="hint"
-              borderRadius={2}
-              color="primary"
-              py={2}
-              px={3}
-              position="relative"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              width="100%"
-              height="100%"
-            >
-              View{" "}
-              {collection.counts.contents - 25 <= 0
-                ? "all"
-                : `${collection.counts.contents - 25} more`}
-            </Box>
-          </File>
-        </Box>
+        <Link passHref href={`/${collection.slug}`}>
+          <Box width="100%" as="a">
+            <File>
+              <Box
+                border="1px solid"
+                borderColor="hint"
+                borderRadius={2}
+                color="primary"
+                py={2}
+                px={3}
+                position="relative"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                width="100%"
+                height="100%"
+              >
+                View{" "}
+                {collection.counts.contents - 25 <= 0
+                  ? "all"
+                  : `${collection.counts.contents - 25} more`}
+              </Box>
+            </File>
+          </Box>
+        </Link>
       </Grid>
     </Box>
   );
@@ -62,6 +60,7 @@ export const InlineCollection: FC<InlineCollectionProps> = ({
 gql`
   fragment InlineCollection on Collection {
     id
+    slug
     updatedAt(relative: true)
     counts {
       contents

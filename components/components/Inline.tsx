@@ -11,6 +11,7 @@ import { FC } from "react";
 import { InlineFragment } from "../../generated/graphql";
 import { simpleFormat } from "../../lib/simpleFormat";
 import { InlineCollection } from "./InlineCollection";
+import Link from "next/link";
 
 type InlineProps = BoxProps & {
   entity: InlineFragment;
@@ -121,7 +122,11 @@ export const Inline: FC<InlineProps> = ({ entity, ...rest }) => {
               >
                 <Stack spacing={6}>
                   <Box>
-                    <Box>{entity.label}</Box>
+                    <Link passHref href={`/${entity.slug}`}>
+                      <Box as="a" color="primary">
+                        {entity.label}
+                      </Box>
+                    </Link>
 
                     <Box color="tertiary">{entity.counts.contents || "∅"}</Box>
                   </Box>
