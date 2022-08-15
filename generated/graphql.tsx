@@ -316,7 +316,7 @@ export enum TruncateDirection {
 
 type Inline_Attachment_Fragment = { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' };
 
-type Inline_Collection_Fragment = { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' } | { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number } } | { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename?: 'Link', id: number, url: string, label: string, kind: 'Link' } | { __typename?: 'Text', id: number, label: string, blurb: string, kind: 'Text' } }> };
+type Inline_Collection_Fragment = { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' } | { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename: 'Attachment', id: number, contentType: string, fileSize?: string | null } | { __typename: 'Collection', id: number, title: string } | { __typename: 'Image', id: number, width: number, height: number, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', _1x: string, _2x: string } } } | { __typename: 'Link', id: number, name: string } | { __typename: 'Text', id: number, body: string } }> } | { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename?: 'Link', id: number, url: string, label: string, kind: 'Link' } | { __typename?: 'Text', id: number, label: string, blurb: string, kind: 'Text' } }> };
 
 type Inline_Image_Fragment = { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } };
 
@@ -325,6 +325,8 @@ type Inline_Link_Fragment = { __typename?: 'Link', id: number, url: string, labe
 type Inline_Text_Fragment = { __typename?: 'Text', id: number, body: string, label: string, kind: 'Text' };
 
 export type InlineFragment = Inline_Attachment_Fragment | Inline_Collection_Fragment | Inline_Image_Fragment | Inline_Link_Fragment | Inline_Text_Fragment;
+
+export type InlineCollectionFragment = { __typename?: 'Collection', id: number, updatedAt: string, counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' } | { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename: 'Attachment', id: number, contentType: string, fileSize?: string | null } | { __typename: 'Collection', id: number, title: string } | { __typename: 'Image', id: number, width: number, height: number, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', _1x: string, _2x: string } } } | { __typename: 'Link', id: number, name: string } | { __typename: 'Text', id: number, body: string } }> } | { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename?: 'Link', id: number, url: string, label: string, kind: 'Link' } | { __typename?: 'Text', id: number, label: string, blurb: string, kind: 'Text' } }> };
 
 type Slide_Attachment_Fragment = { __typename: 'Attachment' };
 
@@ -338,11 +340,13 @@ type Slide_Text_Fragment = { __typename: 'Text', id: number, name: string, body:
 
 export type SlideFragment = Slide_Attachment_Fragment | Slide_Collection_Fragment | Slide_Image_Fragment | Slide_Link_Fragment | Slide_Text_Fragment;
 
+export type ThumbnailCollectionFragment = { __typename?: 'Collection', id: number, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename: 'Attachment', id: number, contentType: string, fileSize?: string | null } | { __typename: 'Collection', id: number, title: string } | { __typename: 'Image', id: number, width: number, height: number, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', _1x: string, _2x: string } } } | { __typename: 'Link', id: number, name: string } | { __typename: 'Text', id: number, body: string } }> };
+
 export type Meta_ImageFragment = { __typename?: 'Image', meta: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } } };
 
 type Thumbnail_Attachment_Fragment = { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' };
 
-type Thumbnail_Collection_Fragment = { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number } };
+type Thumbnail_Collection_Fragment = { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename: 'Attachment', id: number, contentType: string, fileSize?: string | null } | { __typename: 'Collection', id: number, title: string } | { __typename: 'Image', id: number, width: number, height: number, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', _1x: string, _2x: string } } } | { __typename: 'Link', id: number, name: string } | { __typename: 'Text', id: number, body: string } }> };
 
 type Thumbnail_Image_Fragment = { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } };
 
@@ -359,7 +363,7 @@ export type CollectionQueryVariables = Exact<{
 }>;
 
 
-export type CollectionQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, key?: string | null, slug: string, title: string, counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' } | { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number } } | { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename?: 'Link', id: number, url: string, label: string, kind: 'Link' } | { __typename?: 'Text', id: number, label: string, blurb: string, kind: 'Text' } }> } } };
+export type CollectionQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, key?: string | null, slug: string, title: string, counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' } | { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename: 'Attachment', id: number, contentType: string, fileSize?: string | null } | { __typename: 'Collection', id: number, title: string } | { __typename: 'Image', id: number, width: number, height: number, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', _1x: string, _2x: string } } } | { __typename: 'Link', id: number, name: string } | { __typename: 'Text', id: number, body: string } }> } | { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename?: 'Link', id: number, url: string, label: string, kind: 'Link' } | { __typename?: 'Text', id: number, label: string, blurb: string, kind: 'Text' } }> } } };
 
 export type CollectionContentQueryVariables = Exact<{
   collectionId: Scalars['ID'];
@@ -376,7 +380,7 @@ export type IndexQueryVariables = Exact<{
 }>;
 
 
-export type IndexQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, key?: string | null, slug: string, title: string, counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' } | { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number } } | { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename?: 'Link', id: number, url: string, label: string, kind: 'Link' } | { __typename?: 'Text', id: number, label: string, blurb: string, kind: 'Text' } }> } } };
+export type IndexQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, key?: string | null, slug: string, title: string, counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' } | { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename: 'Attachment', id: number, contentType: string, fileSize?: string | null } | { __typename: 'Collection', id: number, title: string } | { __typename: 'Image', id: number, width: number, height: number, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', _1x: string, _2x: string } } } | { __typename: 'Link', id: number, name: string } | { __typename: 'Text', id: number, body: string } }> } | { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename?: 'Link', id: number, url: string, label: string, kind: 'Link' } | { __typename?: 'Text', id: number, label: string, blurb: string, kind: 'Text' } }> } } };
 
 export type PageQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -385,7 +389,7 @@ export type PageQueryVariables = Exact<{
 }>;
 
 
-export type PageQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, key?: string | null, slug: string, title: string, counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, metadata: any, entity: { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' } | { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' } | { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number } } | { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename?: 'Link', id: number, url: string, label: string, kind: 'Link' } | { __typename?: 'Text', id: number, label: string, blurb: string, kind: 'Text' } }> } | { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename?: 'Link', id: number, url: string, label: string, kind: 'Link' } | { __typename?: 'Text', id: number, body: string, label: string, kind: 'Text' } }> } } };
+export type PageQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, key?: string | null, slug: string, title: string, counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, metadata: any, entity: { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' } | { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename?: 'Attachment', id: number, url: string, fileSize?: string | null, contentType: string, label: string, kind: 'Attachment' } | { __typename?: 'Collection', id: number, slug: string, updatedAt: string, label: string, kind: 'Collection', counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename: 'Attachment', id: number, contentType: string, fileSize?: string | null } | { __typename: 'Collection', id: number, title: string } | { __typename: 'Image', id: number, width: number, height: number, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', _1x: string, _2x: string } } } | { __typename: 'Link', id: number, name: string } | { __typename: 'Text', id: number, body: string } }> } | { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename?: 'Link', id: number, url: string, label: string, kind: 'Link' } | { __typename?: 'Text', id: number, label: string, blurb: string, kind: 'Text' } }> } | { __typename?: 'Image', id: number, width: number, height: number, url: string, label: string, kind: 'Image', placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, thumb: { __typename?: 'ResizedImage', width: number, height: number, srcs: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename?: 'Link', id: number, url: string, label: string, kind: 'Link' } | { __typename?: 'Text', id: number, body: string, label: string, kind: 'Text' } }> } } };
 
 export type SlidesQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -396,6 +400,45 @@ export type SlidesQueryVariables = Exact<{
 
 export type SlidesQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, slug: string, title: string, counts: { __typename?: 'CollectionCounts', contents: number }, contents: Array<{ __typename?: 'Content', id: number, entity: { __typename: 'Attachment' } | { __typename: 'Collection', id: number, slug: string, name: string } | { __typename: 'Image', id: number, name: string, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', _1x: string } }, resized: { __typename?: 'ResizedImage', width: number, height: number, urls: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } } } | { __typename: 'Link', id: number, name: string, url: string } | { __typename: 'Text', id: number, name: string, body: string } }> } } };
 
+export const ThumbnailCollectionFragmentDoc = gql`
+    fragment ThumbnailCollection on Collection {
+  id
+  contents(per: $per) {
+    id
+    entity {
+      __typename
+      ... on Image {
+        id
+        width
+        height
+        placeholder: resized(width: 125, height: 125, fit: COVER) {
+          urls {
+            _1x
+            _2x
+          }
+        }
+      }
+      ... on Text {
+        id
+        body: toString(length: 200)
+      }
+      ... on Link {
+        id
+        name: toString(length: 30, from: CENTER)
+      }
+      ... on Collection {
+        id
+        title
+      }
+      ... on Attachment {
+        id
+        contentType
+        fileSize
+      }
+    }
+  }
+}
+    `;
 export const ThumbnailFragmentDoc = gql`
     fragment Thumbnail on Entity {
   kind: __typename
@@ -417,6 +460,7 @@ export const ThumbnailFragmentDoc = gql`
     url
   }
   ... on Collection {
+    ...ThumbnailCollection
     id
     slug
     label: toString(length: 35, from: CENTER)
@@ -447,7 +491,22 @@ export const ThumbnailFragmentDoc = gql`
     }
   }
 }
-    `;
+    ${ThumbnailCollectionFragmentDoc}`;
+export const InlineCollectionFragmentDoc = gql`
+    fragment InlineCollection on Collection {
+  id
+  updatedAt(relative: true)
+  counts {
+    contents
+  }
+  contents(page: 1, per: 10) {
+    id
+    entity {
+      ...Thumbnail
+    }
+  }
+}
+    ${ThumbnailFragmentDoc}`;
 export const InlineFragmentDoc = gql`
     fragment Inline on Entity {
   kind: __typename
@@ -469,18 +528,13 @@ export const InlineFragmentDoc = gql`
     url
   }
   ... on Collection {
+    ...InlineCollection
     id
     slug
     label: toString(length: 35, from: CENTER)
     updatedAt(relative: true)
     counts {
       contents
-    }
-    contents(per: 25) {
-      id
-      entity {
-        ...Thumbnail
-      }
     }
   }
   ... on Image {
@@ -505,7 +559,7 @@ export const InlineFragmentDoc = gql`
     }
   }
 }
-    ${ThumbnailFragmentDoc}`;
+    ${InlineCollectionFragmentDoc}`;
 export const SlideFragmentDoc = gql`
     fragment Slide on Entity {
   __typename

@@ -5,6 +5,7 @@ import { ThumbnailFragment } from "../../generated/graphql";
 import Link from "next/link";
 import { usePagination } from "../../lib/usePagination";
 import { FadeOut } from "./FadeOut";
+import { ThumbnailCollection } from "../components/ThumbnailCollection";
 
 type ThumbnailProps = {
   collectionId: string;
@@ -168,7 +169,11 @@ export const Thumbnail: FC<ThumbnailProps> = ({
                   >
                     <Box>{entity.label}</Box>
 
-                    <Box color="tertiary">{entity.counts.contents || "∅"}</Box>
+                    <Box color="tertiary" mb={3}>
+                      {entity.counts.contents || "∅"}
+                    </Box>
+
+                    <ThumbnailCollection collection={entity} />
                   </Box>
                 );
 
@@ -203,6 +208,7 @@ gql`
       url
     }
     ... on Collection {
+      ...ThumbnailCollection
       id
       slug
       label: toString(length: 35, from: CENTER)

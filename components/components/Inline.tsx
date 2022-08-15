@@ -3,32 +3,20 @@ import {
   Box,
   BoxProps,
   File,
-  Grid,
   HTML,
   ResponsiveImage,
   Stack,
 } from "@auspices/eos";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import { InlineFragment } from "../../generated/graphql";
 import { simpleFormat } from "../../lib/simpleFormat";
-import { Thumbnail } from "../core/Thumbnail";
+import { InlineCollection } from "./InlineCollection";
 
 type InlineProps = BoxProps & {
   entity: InlineFragment;
 };
 
 export const Inline: FC<InlineProps> = ({ entity, ...rest }) => {
-  const meta = useMemo(() => {
-    switch (entity.__typename) {
-      case "Image":
-        return `${entity.width}×${entity.height}`;
-      case "Collection":
-        return entity.updatedAt;
-      default:
-        return null;
-    }
-  }, [entity]);
-
   return (
     <Box width="100%" position="relative" {...rest}>
       {(() => {
@@ -138,40 +126,7 @@ export const Inline: FC<InlineProps> = ({ entity, ...rest }) => {
                     <Box color="tertiary">{entity.counts.contents || "∅"}</Box>
                   </Box>
 
-                  <Grid>
-                    {entity.contents.map((content) => {
-                      return (
-                        <Thumbnail
-                          key={content.id}
-                          contentId={content.id}
-                          collectionId={`${entity.id}`}
-                          entity={content.entity}
-                        />
-                      );
-                    })}
-
-                    <File>
-                      <Box
-                        border="1px solid"
-                        borderColor="hint"
-                        borderRadius={2}
-                        color="primary"
-                        py={2}
-                        px={3}
-                        position="relative"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        width="100%"
-                        height="100%"
-                      >
-                        View{" "}
-                        {entity.counts.contents - 25 < 0
-                          ? "all"
-                          : `${entity.counts.contents - 25} more`}
-                      </Box>
-                    </File>
-                  </Grid>
+                  <InlineCollection collection={entity} />
                 </Stack>
               </Box>
             );
@@ -205,18 +160,13 @@ gql`
       url
     }
     ... on Collection {
+      ...InlineCollection
       id
       slug
       label: toString(length: 35, from: CENTER)
       updatedAt(relative: true)
       counts {
         contents
-      }
-      contents(per: 25) {
-        id
-        entity {
-          ...Thumbnail
-        }
       }
     }
     ... on Image {
