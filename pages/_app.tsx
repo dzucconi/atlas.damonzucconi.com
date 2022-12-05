@@ -46,21 +46,14 @@ const App: FC<{ children?: React.ReactNode }> = ({ children }) => {
 
         <Loader />
 
-        <Box p={[0, 2, 4]}>{children}</Box>
-
-        {/* <Tooltip label="Invert color scheme" placement="left">
-          <Clickable
-            position="fixed"
-            bottom={0}
-            right={0}
-            p={6}
-            zIndex={1}
-            onClick={toggleScheme}
-            cursor="pointer"
-          >
-            <Box width={10} height={10} bg="primary" borderRadius="50%" />
-          </Clickable>
-        </Tooltip> */}
+        <Box
+          display="flex"
+          flexDirection="column"
+          p={[0, 0, 2, 4]}
+          minHeight="100vh"
+        >
+          {children}
+        </Box>
       </ThemeProvider>
     </>
   );
@@ -75,8 +68,6 @@ const Provided = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   return (
     <UrqlProvider>
-      {/* TODO: Fix typing in eos */}
-      {/* @ts-ignore */}
       <ThemerProvider>
         <PaginationProvider>
           <App>{getLayout(<Component {...pageProps} />)}</App>

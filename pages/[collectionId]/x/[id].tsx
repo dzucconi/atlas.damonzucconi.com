@@ -61,7 +61,7 @@ const Show: FC = () => {
           : {})}
       />
 
-      <Stack spacing={4}>
+      <Stack spacing={4} flex={1}>
         <Stack>
           <Stack direction={["vertical", "vertical", "horizontal"]}>
             <Box width={["100%", "100%", "auto"]}>
@@ -81,6 +81,7 @@ const Show: FC = () => {
               label={({ open, ...rest }) => (
                 <Button width="100%" {...rest}>
                   <Truncate title={entity.name}>{entity.name}</Truncate>
+
                   <Caret ml={3} direction={open ? "up" : "down"} />
                 </Button>
               )}
@@ -151,7 +152,14 @@ const Show: FC = () => {
           </Stack>
         </Stack>
 
-        <Box display="flex" justifyContent="center">
+        <Box
+          display="flex"
+          width="100%"
+          alignItems="center"
+          justifyContent="center"
+          flexDirection="column"
+          flex={1}
+        >
           {(() => {
             switch (entity.__typename) {
               case "Image":
