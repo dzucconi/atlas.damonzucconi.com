@@ -1,7 +1,6 @@
-import { Box, BoxProps, Cell as _Cell, Stack } from "@auspices/eos";
+import { Box, BoxProps, Cell, Stack } from "@auspices/eos";
 import Link from "next/link";
 import { AnchorHTMLAttributes, FC } from "react";
-import styled from "styled-components";
 
 type Definition = {
   term: string;
@@ -30,7 +29,9 @@ export const DefinitionList: FC<DefinitionListProps> = ({
 
           return (
             <Stack direction="horizontal" key={index}>
-              <Cell as="dt">{term}</Cell>
+              <Cell variant="small" as="dt">
+                {term}
+              </Cell>
 
               <Box as="dd" flex="1">
                 {(() => {
@@ -46,7 +47,7 @@ export const DefinitionList: FC<DefinitionListProps> = ({
 
                   if (isExternal) {
                     return (
-                      <Cell as="a" href={href} {...link}>
+                      <Cell variant="small" as="a" href={href} {...link}>
                         {definition}
                       </Cell>
                     );
@@ -55,12 +56,14 @@ export const DefinitionList: FC<DefinitionListProps> = ({
                   if (isInternal) {
                     return (
                       <Link href={href} passHref>
-                        <Cell as="a">{definition}</Cell>
+                        <Cell variant="small" as="a">
+                          {definition}
+                        </Cell>
                       </Link>
                     );
                   }
 
-                  return <Cell>{definition}</Cell>;
+                  return <Cell variant="small">{definition}</Cell>;
                 })()}
               </Box>
             </Stack>
@@ -69,12 +72,4 @@ export const DefinitionList: FC<DefinitionListProps> = ({
       </Stack>
     </Box>
   );
-};
-
-export const Cell = styled(_Cell)``;
-
-Cell.defaultProps = {
-  fontSize: 1,
-  px: 3,
-  py: 2,
 };

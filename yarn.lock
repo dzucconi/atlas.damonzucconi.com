@@ -40,10 +40,10 @@
   dependencies:
     node-fetch "^2.6.1"
 
-"@auspices/eos@^2.34.1":
-  version "2.34.1"
-  resolved "https://registry.yarnpkg.com/@auspices/eos/-/eos-2.34.1.tgz#111f56ceeca55f8387355571e7e9e543fd072cf4"
-  integrity sha512-3+pbeJpg++GEtDnWx7pgKQmLFoQNDHdIZBvegY5li0frjCbmR9E1Bzhs0dihmO2ngUtsb3400oUyrdsuoQC9pA==
+"@auspices/eos@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@auspices/eos/-/eos-4.0.0.tgz#cdf2e5311348bfecdee1b42a52d9a64438ee5669"
+  integrity sha512-HARCpcLlJ7h8GanIv66X2kgnLfwkTvQqFuEzvOp+87TVIVIXVIzIP38QSYmSWhNBrSVZArVFLnZh70wkcGwhBQ==
   dependencies:
     "@popperjs/core" "^2.11.5"
     "@seznam/compose-react-refs" "^1.0.5"

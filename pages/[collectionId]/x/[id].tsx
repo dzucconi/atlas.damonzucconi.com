@@ -5,7 +5,6 @@ import {
   Cell,
   Dropdown,
   HTML,
-  Input,
   PaneOption,
   ResponsiveImage,
   Stack,

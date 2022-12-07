@@ -12,6 +12,7 @@ import { InlineFragment } from "../../generated/graphql";
 import { simpleFormat } from "../../lib/simpleFormat";
 import { InlineCollection } from "./InlineCollection";
 import Link from "next/link";
+import { UrlBar } from "../core/UrlBar";
 
 type InlineProps = BoxProps & {
   entity: InlineFragment;
@@ -24,43 +25,28 @@ export const Inline: FC<InlineProps> = ({ entity, ...rest }) => {
         switch (entity.__typename) {
           case "Image":
             return (
-              <Box display="flex" justifyContent="center">
-                <ResponsiveImage
-                  placeholder={entity.placeholder.urls.src}
-                  srcs={[
-                    entity.thumb.srcs._1x,
-                    entity.thumb.srcs._2x,
-                    entity.thumb.srcs._3x,
-                  ]}
-                  aspectWidth={entity.thumb.width}
-                  aspectHeight={entity.thumb.height}
-                  maxWidth={entity.thumb.width}
-                  maxHeight={entity.thumb.height}
-                  alt={entity.label}
-                  indicator
-                  loading="lazy"
-                />
-              </Box>
+              <ResponsiveImage
+                placeholder={entity.placeholder.urls.src}
+                srcs={[
+                  entity.thumb.srcs._1x,
+                  entity.thumb.srcs._2x,
+                  entity.thumb.srcs._3x,
+                ]}
+                aspectWidth={entity.thumb.width}
+                aspectHeight={entity.thumb.height}
+                maxWidth={entity.thumb.width}
+                maxHeight={entity.thumb.height}
+                alt={entity.label}
+                indicator
+                loading="lazy"
+              />
             );
 
           case "Link":
             return (
-              <Box display="flex" justifyContent="center">
-                <Box
-                  border="1px solid"
-                  borderColor="external"
-                  borderRadius={4}
-                  color="external"
-                  px={4}
-                  py={3}
-                  textAlign="center"
-                  as="a"
-                  href={entity.url}
-                  target="_blank"
-                >
-                  {entity.url}
-                </Box>
-              </Box>
+              <UrlBar href={entity.url} target="_blank">
+                {entity.url}
+              </UrlBar>
             );
 
           case "Text":
@@ -68,8 +54,6 @@ export const Inline: FC<InlineProps> = ({ entity, ...rest }) => {
               <HTML
                 html={simpleFormat(entity.body)}
                 maxWidth="65ch"
-                px={3}
-                mx="auto"
                 fontSize={4}
               />
             );
@@ -105,36 +89,7 @@ export const Inline: FC<InlineProps> = ({ entity, ...rest }) => {
             );
 
           case "Collection":
-            return (
-              <Box
-                border="1px solid"
-                borderColor="border"
-                borderRadius={4}
-                color="primary"
-                height="100%"
-                width="100%"
-                display="flex"
-                flexDirection="column"
-                justifyContent="flex-start"
-                pt={3}
-                px={4}
-                pb={6}
-              >
-                <Stack spacing={6}>
-                  <Box>
-                    <Link passHref href={`/${entity.slug}`}>
-                      <Box as="a" color="primary">
-                        {entity.label}
-                      </Box>
-                    </Link>
-
-                    <Box color="tertiary">{entity.counts.contents || "∅"}</Box>
-                  </Box>
-
-                  <InlineCollection collection={entity} />
-                </Stack>
-              </Box>
-            );
+            return <InlineCollection collection={entity} />;
 
           default:
             return <div>{entity.__typename}</div>;

@@ -1,4 +1,4 @@
-import { Dropdown, Grid, PaneOption, Stack } from "@auspices/eos";
+import { Cell, Dropdown, Grid, PaneOption, Split, Stack } from "@auspices/eos";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -34,6 +34,7 @@ const Collection: NextPage = () => {
 
   const {
     root: {
+      collection,
       collection: { key, slug, title, counts, contents },
     },
   } = data;
@@ -70,6 +71,22 @@ const Collection: NextPage = () => {
             total={counts.contents}
             href={`/${collectionId}`}
           />
+
+          {collection.metadata && (
+            <Stack>
+              {Object.entries(collection.metadata).map(([term, definition]) => (
+                <Split key={term}>
+                  <Cell height="100%" alignItems="flex-start" variant="small">
+                    {term}
+                  </Cell>
+
+                  <Cell height="100%" alignItems="flex-start" variant="small">
+                    {definition as string}
+                  </Cell>
+                </Split>
+              ))}
+            </Stack>
+          )}
         </Stack>
 
         <Grid>
@@ -109,6 +126,7 @@ gql`
           key
           slug
           title
+          metadata
           counts {
             contents
           }

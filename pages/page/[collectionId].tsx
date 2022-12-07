@@ -1,4 +1,4 @@
-import { Dropdown, PaneOption, Stack } from "@auspices/eos";
+import { Cell, Dropdown, PaneOption, Split, Stack } from "@auspices/eos";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -37,22 +37,20 @@ const Page: NextPage = () => {
   }
 
   const {
-    root: {
-      collection: { key, slug, title, counts, contents },
-    },
+    root: { collection },
   } = data;
 
   return (
     <>
-      <Meta title={title} />
+      <Meta title={collection.title} />
 
       <Stack spacing={8}>
         <Stack>
-          <Dropdown label={title} flex={1} zIndex={2}>
-            {key && (
+          <Dropdown label={collection.title} flex={1} zIndex={2}>
+            {collection.key && (
               <PaneOption
                 as="a"
-                href={`https://glyph.labs.auspic.es/graph/${key}`}
+                href={`https://glyph.labs.auspic.es/graph/${collection.key}`}
                 target="_blank"
               >
                 data
@@ -61,7 +59,7 @@ const Page: NextPage = () => {
 
             <PaneOption
               as="a"
-              href={`https://auspic.es/xs/${slug}`}
+              href={`https://auspic.es/xs/${collection.slug}`}
               target="_blank"
             >
               open in auspic.es
@@ -71,20 +69,36 @@ const Page: NextPage = () => {
           <Pagination
             page={page}
             per={per}
-            total={counts.contents}
+            total={collection.counts.contents}
             href={`/page/${collectionId}`}
           />
+
+          {collection.metadata && (
+            <Stack>
+              {Object.entries(collection.metadata).map(([term, definition]) => (
+                <Split key={term}>
+                  <Cell height="100%" alignItems="flex-start" variant="small">
+                    {term}
+                  </Cell>
+
+                  <Cell height="100%" alignItems="flex-start" variant="small">
+                    {definition as string}
+                  </Cell>
+                </Split>
+              ))}
+            </Stack>
+          )}
         </Stack>
 
         <Stack spacing={8}>
-          {contents.map((content) => {
+          {collection.contents.map((content) => {
             return (
-              <Stack key={content.id} spacing={5}>
+              <Stack key={content.id} spacing={4}>
                 <Inline entity={content.entity} />
 
                 {content.metadata && (
                   <DefinitionList
-                    mx="auto"
+                    maxWidth="65ch"
                     definitions={Object.entries(content.metadata).map(
                       ([term, definition]) => ({
                         term,
@@ -101,7 +115,7 @@ const Page: NextPage = () => {
         <Pagination
           page={page}
           per={per}
-          total={counts.contents}
+          total={collection.counts.contents}
           href={`/page/${collectionId}`}
         />
       </Stack>
@@ -120,6 +134,7 @@ gql`
           key
           slug
           title
+          metadata
           counts {
             contents
           }
