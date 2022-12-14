@@ -1,4 +1,4 @@
-import { Dropdown, Grid, PaneOption, Stack } from "@auspices/eos";
+import { Cell, Dropdown, Grid, PaneOption, Split, Stack } from "@auspices/eos";
 import type { NextPage } from "next";
 import { gql } from "urql";
 import { BottomNav } from "../components/core/BottomNav";
@@ -25,21 +25,19 @@ const Home: NextPage = () => {
   }
 
   const {
-    root: {
-      collection: { slug, key, title, contents, counts },
-    },
+    root: { collection },
   } = data;
 
   return (
     <>
-      <Meta title={title} />
+      <Meta title={collection.title} />
 
       <Stack spacing={4}>
         <Stack>
-          <Dropdown label={title} flex={1}>
+          <Dropdown label={collection.title} flex={1}>
             <PaneOption
               as="a"
-              href={`https://glyph.labs.auspic.es/graph/${key}`}
+              href={`https://glyph.labs.auspic.es/graph/${collection.key}`}
               target="_blank"
             >
               data
@@ -47,32 +45,57 @@ const Home: NextPage = () => {
 
             <PaneOption
               as="a"
-              href={`https://auspic.es/xs/${slug}`}
+              href={`https://auspic.es/xs/${collection.slug}`}
               target="_blank"
             >
-              open in Auspic.es
+              open in auspic.es
             </PaneOption>
           </Dropdown>
 
-          <Pagination page={page} per={per} total={counts.contents} href="/" />
+          <Pagination
+            page={page}
+            per={per}
+            total={collection.counts.contents}
+            href="/"
+          />
+
+          {collection.metadata && (
+            <Stack>
+              {Object.entries(collection.metadata).map(([term, definition]) => (
+                <Split key={term}>
+                  <Cell height="100%" alignItems="flex-start" variant="small">
+                    {term}
+                  </Cell>
+
+                  <Cell height="100%" alignItems="flex-start" variant="small">
+                    {definition as string}
+                  </Cell>
+                </Split>
+              ))}
+            </Stack>
+          )}
         </Stack>
 
         <Grid>
-          {contents.map((content) => {
+          {collection.contents.map((content) => {
             if (content.entity.kind === "Image")
               return (
                 <Thumbnail
                   key={content.id}
                   contentId={content.id}
-                  collectionId={slug}
+                  collectionId={collection.slug}
                   entity={content.entity}
                 />
               );
           })}
         </Grid>
-
         <BottomNav>
-          <Pagination page={page} per={per} total={counts.contents} href="/" />
+          <Pagination
+            page={page}
+            per={per}
+            total={collection.counts.contents}
+            href="/"
+          />
         </BottomNav>
       </Stack>
     </>
@@ -93,6 +116,7 @@ gql`
           counts {
             contents
           }
+          metadata
           contents(page: $page, per: $per) {
             id
             entity {

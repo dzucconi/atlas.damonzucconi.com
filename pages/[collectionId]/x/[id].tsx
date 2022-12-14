@@ -18,7 +18,7 @@ import { Loading } from "../../../components/core/Loading";
 import { Meta, META_IMAGE_FRAGMENT } from "../../../components/core/Meta";
 import { useCollectionContentQuery } from "../../../generated/graphql";
 import { simpleFormat } from "../../../lib/simpleFormat";
-import { buildGetStaticProps, withUrql } from "../../../lib/urql";
+import { withUrql } from "../../../lib/urql";
 import { usePagination } from "../../../lib/usePagination";
 
 const Show: FC = () => {
@@ -275,23 +275,3 @@ const COLLECTION_CONTENT_QUERY = gql`
 `;
 
 export default withUrql(Show);
-
-export const getStaticProps = buildGetStaticProps((ctx) => [
-  COLLECTION_CONTENT_QUERY,
-  { id: ctx.params?.id, collectionId: ctx.params?.collectionId },
-]);
-
-export const getStaticPaths = async () => {
-  return { paths: [], fallback: "blocking" };
-};
-
-// const Editor = styled(Input).attrs({
-//   flex: 1,
-//   p: 6,
-//   borderWidth: 0,
-// })`
-//   resize: none;
-//   &:focus {
-//     box-shadow: none;
-//   }
-// `
