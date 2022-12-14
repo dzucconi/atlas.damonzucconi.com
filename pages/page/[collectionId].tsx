@@ -12,7 +12,7 @@ import { usePageQuery } from "../../generated/graphql";
 
 const Page: NextPage = () => {
   const {
-    query: { collectionId, page: _page = 1, per: _per = 100 },
+    query: { collectionId, page: _page = 1, per: _per = 50 },
     isReady,
   } = useRouter();
 
