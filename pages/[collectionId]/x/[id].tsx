@@ -119,8 +119,8 @@ const Show: FC = () => {
           </Stack>
 
           <Stack direction="horizontal">
-            {previous && (
-              <Box flex={1}>
+            <Box flex={1}>
+              {previous ? (
                 <Link
                   href={{
                     pathname: `/${collectionId}/x/${previous.id}`,
@@ -128,14 +128,18 @@ const Show: FC = () => {
                   }}
                 >
                   <Button width="100%" as="a">
-                    previous
+                    ←
                   </Button>
                 </Link>
-              </Box>
-            )}
+              ) : (
+                <Button width="100%" disabled>
+                  ←
+                </Button>
+              )}
+            </Box>
 
-            {next && (
-              <Box flex={1}>
+            <Box flex={1}>
+              {next ? (
                 <Link
                   href={{
                     pathname: `/${collectionId}/x/${next.id}`,
@@ -143,11 +147,15 @@ const Show: FC = () => {
                   }}
                 >
                   <Button width="100%" as="a">
-                    next
+                    →
                   </Button>
                 </Link>
-              </Box>
-            )}
+              ) : (
+                <Button width="100%" disabled>
+                  →
+                </Button>
+              )}
+            </Box>
           </Stack>
         </Stack>
 

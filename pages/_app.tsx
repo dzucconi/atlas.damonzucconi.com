@@ -1,13 +1,6 @@
 import { AppProps } from "next/app";
 import { ThemeProvider } from "styled-components";
-import {
-  Box,
-  Clickable,
-  GlobalStyles,
-  ThemerProvider,
-  Tooltip,
-  useThemer,
-} from "@auspices/eos";
+import { Box, GlobalStyles, ThemerProvider, useThemer } from "@auspices/eos";
 import { FC, ReactElement, ReactNode } from "react";
 import { Loader } from "../components/core/Loader";
 import { NextPage } from "next";
@@ -20,7 +13,7 @@ type NextPageWithLayout = NextPage & {
 };
 
 const App: FC<{ children?: React.ReactNode }> = ({ children }) => {
-  const { theme, toggleScheme } = useThemer();
+  const { theme } = useThemer();
 
   return (
     <>
@@ -31,17 +24,7 @@ const App: FC<{ children?: React.ReactNode }> = ({ children }) => {
         />
       </Head>
 
-      <ThemeProvider
-        theme={{
-          ...theme,
-          fonts: {
-            ...theme.fonts,
-            body: "'Helvetica Neue', Helvetica, sans-serif",
-            system:
-              '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
-          },
-        }}
-      >
+      <ThemeProvider theme={theme}>
         <GlobalStyles />
 
         <Loader />

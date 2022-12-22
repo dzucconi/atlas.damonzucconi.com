@@ -10,7 +10,7 @@
     "gql": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "@auspices/eos": "^4.0.0",
+    "@auspices/eos": "^4.2.1",
     "graphql": "^16.5.0",
     "next": "^12.2.5",
     "next-urql": "^3.3.3",
