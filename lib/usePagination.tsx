@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 import { stringify } from "qs";
-import { paginate, THEME } from "@auspices/eos";
+import { usePagination as _usePagination, THEME } from "@auspices/eos";
 import { useRouter } from "next/router";
 import { isServer } from "./isServer";
 
@@ -67,8 +67,8 @@ export const usePagination = () => {
   page = parseInt(String(page), 10);
   per = parseInt(String(per), 10);
 
-  const { totalPages, nextPage, prevPage } = paginate({
-    page,
+  const { totalPages, nextPage, prevPage } = _usePagination({
+    currentPage: page,
     per,
     total,
   });

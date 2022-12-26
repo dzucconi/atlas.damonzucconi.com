@@ -53,31 +53,31 @@ export const InlineCollection: FC<InlineCollectionProps> = ({
         })}
 
         {collection.counts.contents > 50 && (
-          <Link passHref href={`/${collection.slug}`}>
-            <Box width="100%" as="a">
-              <File>
-                <Box
-                  border="1px solid"
-                  borderColor="hint"
-                  borderRadius={2}
-                  color="primary"
-                  py={2}
-                  px={3}
-                  position="relative"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  width="100%"
-                  height="100%"
-                >
-                  View{" "}
-                  {collection.counts.contents - 25 <= 0
-                    ? "all"
-                    : `${collection.counts.contents - 25} more`}
-                </Box>
-              </File>
-            </Box>
-          </Link>
+          // FIXME:
+          // @ts-ignore
+          <Box width="100%" as={Link} href={`/${collection.slug}`}>
+            <File>
+              <Box
+                border="1px solid"
+                borderColor="hint"
+                borderRadius={2}
+                color="primary"
+                py={2}
+                px={3}
+                position="relative"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                width="100%"
+                height="100%"
+              >
+                View{" "}
+                {collection.counts.contents - 25 <= 0
+                  ? "all"
+                  : `${collection.counts.contents - 25} more`}
+              </Box>
+            </File>
+          </Box>
         )}
       </Grid>
     </Box>

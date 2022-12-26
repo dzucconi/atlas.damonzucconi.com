@@ -64,16 +64,17 @@ const Show: FC = () => {
         <Stack>
           <Stack direction={["vertical", "vertical", "horizontal"]}>
             <Box width={["100%", "100%", "auto"]}>
-              <Link
+              {/* FIXME: */}
+              {/* @ts-ignore */}
+              <Button
+                as={Link}
                 href={{ pathname: `/${collectionId}`, query: { page, per } }}
-                passHref
+                width="100%"
               >
-                <Button as="a" width="100%">
-                  <Caret direction="left" mr={3} />
+                <Caret direction="left" mr={3} />
 
-                  {title}
-                </Button>
-              </Link>
+                {title}
+              </Button>
             </Box>
 
             <Dropdown
@@ -121,16 +122,18 @@ const Show: FC = () => {
           <Stack direction="horizontal">
             <Box flex={1}>
               {previous ? (
-                <Link
+                // FIXME:
+                // @ts-ignore
+                <Button
+                  as={Link}
                   href={{
                     pathname: `/${collectionId}/x/${previous.id}`,
                     query: { page, per },
                   }}
+                  width="100%"
                 >
-                  <Button width="100%" as="a">
-                    ←
-                  </Button>
-                </Link>
+                  ←
+                </Button>
               ) : (
                 <Button width="100%" disabled>
                   ←
@@ -140,16 +143,18 @@ const Show: FC = () => {
 
             <Box flex={1}>
               {next ? (
-                <Link
+                // FIXME:
+                // @ts-ignore
+                <Button
+                  as={Link}
                   href={{
                     pathname: `/${collectionId}/x/${next.id}`,
                     query: { page, per },
                   }}
+                  width="100%"
                 >
-                  <Button width="100%" as="a">
-                    →
-                  </Button>
-                </Link>
+                  →
+                </Button>
               ) : (
                 <Button width="100%" disabled>
                   →

@@ -47,143 +47,138 @@ export const Thumbnail: FC<ThumbnailProps> = ({
   }, [collectionId, contentId, entity, page, per]);
 
   return (
-    <Link passHref href={href}>
-      <Box as="a" width="100%" position="relative">
-        <File
-          position="static"
-          name={entity.label}
-          meta={meta}
-          cursor="pointer"
-        >
-          {(() => {
-            switch (entity.__typename) {
-              case "Image":
-                return (
-                  <ResponsiveImage
-                    placeholder={entity.placeholder.urls.src}
-                    srcs={[
-                      entity.thumb.srcs._1x,
-                      entity.thumb.srcs._2x,
-                      entity.thumb.srcs._3x,
-                    ]}
-                    aspectWidth={entity.thumb.width}
-                    aspectHeight={entity.thumb.height}
-                    maxWidth={entity.thumb.width}
-                    maxHeight={entity.thumb.height}
-                    alt={entity.label}
-                    loading="lazy"
-                  />
-                );
+    // FIXME:
+    // @ts-ignore
+    <Box as={Link} href={href} width="100%" position="relative">
+      <File position="static" name={entity.label} meta={meta} cursor="pointer">
+        {(() => {
+          switch (entity.__typename) {
+            case "Image":
+              return (
+                <ResponsiveImage
+                  placeholder={entity.placeholder.urls.src}
+                  srcs={[
+                    entity.thumb.srcs._1x,
+                    entity.thumb.srcs._2x,
+                    entity.thumb.srcs._3x,
+                  ]}
+                  aspectWidth={entity.thumb.width}
+                  aspectHeight={entity.thumb.height}
+                  maxWidth={entity.thumb.width}
+                  maxHeight={entity.thumb.height}
+                  alt={entity.label}
+                  loading="lazy"
+                />
+              );
 
-              case "Link":
-                return (
+            case "Link":
+              return (
+                <Box
+                  border="1px solid"
+                  borderColor="external"
+                  borderRadius={4}
+                  color="external"
+                  fontSize={0}
+                  height="100%"
+                  width="100%"
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="flex-end"
+                >
                   <Box
-                    border="1px solid"
-                    borderColor="external"
-                    borderRadius={4}
-                    color="external"
-                    fontSize={0}
-                    height="100%"
-                    width="100%"
-                    display="flex"
-                    flexDirection="column"
-                    justifyContent="flex-end"
-                  >
-                    <Box
-                      px={4}
-                      py={3}
-                      borderTop="1px solid"
-                      borderColor="external"
-                    >
-                      {entity.label}
-                    </Box>
-                  </Box>
-                );
-
-              case "Text":
-                return (
-                  <Box
-                    fontSize={0}
-                    border="1px solid"
-                    borderColor="hint"
-                    borderRadius={2}
-                    color="primary"
-                    py={2}
-                    px={3}
-                    position="relative"
-                    display="flex"
-                    alignItems="flex-start"
-                    justifyContent="flex-start"
-                    width="100%"
-                    height="100%"
-                    style={{ whiteSpace: "pre-wrap" }}
-                  >
-                    {entity.blurb.length > 500 ? (
-                      <FadeOut>{entity.blurb}</FadeOut>
-                    ) : (
-                      <>{entity.blurb}</>
-                    )}
-                  </Box>
-                );
-
-              case "Attachment":
-                return (
-                  <Box
-                    border="1px solid"
-                    borderColor="secondary"
-                    borderRadius={4}
-                    color="primary"
-                    fontSize={0}
-                    height="100%"
-                    width="100%"
-                    display="flex"
-                    flexDirection="column"
-                    justifyContent="flex-start"
-                  >
-                    <Box
-                      px={4}
-                      py={3}
-                      borderBottom="1px solid"
-                      borderColor="secondary"
-                      color="secondary"
-                    >
-                      {entity.contentType} ({entity.fileSize})
-                    </Box>
-                  </Box>
-                );
-
-              case "Collection":
-                return (
-                  <Box
-                    border="1px solid"
-                    borderColor="border"
-                    borderRadius={4}
-                    color="primary"
-                    height="100%"
-                    width="100%"
-                    display="flex"
-                    flexDirection="column"
-                    justifyContent="flex-start"
-                    py={3}
                     px={4}
+                    py={3}
+                    borderTop="1px solid"
+                    borderColor="external"
                   >
-                    <Box>{entity.label}</Box>
-
-                    <Box color="tertiary" mb={3}>
-                      {entity.counts.contents || "∅"}
-                    </Box>
-
-                    <ThumbnailCollection collection={entity} />
+                    {entity.label}
                   </Box>
-                );
+                </Box>
+              );
 
-              default:
-                return <div>{entity.__typename}</div>;
-            }
-          })()}
-        </File>
-      </Box>
-    </Link>
+            case "Text":
+              return (
+                <Box
+                  fontSize={0}
+                  border="1px solid"
+                  borderColor="hint"
+                  borderRadius={2}
+                  color="primary"
+                  py={2}
+                  px={3}
+                  position="relative"
+                  display="flex"
+                  alignItems="flex-start"
+                  justifyContent="flex-start"
+                  width="100%"
+                  height="100%"
+                  style={{ whiteSpace: "pre-wrap" }}
+                >
+                  {entity.blurb.length > 500 ? (
+                    <FadeOut>{entity.blurb}</FadeOut>
+                  ) : (
+                    <>{entity.blurb}</>
+                  )}
+                </Box>
+              );
+
+            case "Attachment":
+              return (
+                <Box
+                  border="1px solid"
+                  borderColor="secondary"
+                  borderRadius={4}
+                  color="primary"
+                  fontSize={0}
+                  height="100%"
+                  width="100%"
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="flex-start"
+                >
+                  <Box
+                    px={4}
+                    py={3}
+                    borderBottom="1px solid"
+                    borderColor="secondary"
+                    color="secondary"
+                  >
+                    {entity.contentType} ({entity.fileSize})
+                  </Box>
+                </Box>
+              );
+
+            case "Collection":
+              return (
+                <Box
+                  border="1px solid"
+                  borderColor="border"
+                  borderRadius={4}
+                  color="primary"
+                  height="100%"
+                  width="100%"
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="flex-start"
+                  py={3}
+                  px={4}
+                >
+                  <Box>{entity.label}</Box>
+
+                  <Box color="tertiary" mb={3}>
+                    {entity.counts.contents || "∅"}
+                  </Box>
+
+                  <ThumbnailCollection collection={entity} />
+                </Box>
+              );
+
+            default:
+              return <div>{entity.__typename}</div>;
+          }
+        })()}
+      </File>
+    </Box>
   );
 };
 

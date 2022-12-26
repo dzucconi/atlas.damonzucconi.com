@@ -55,11 +55,11 @@ export const DefinitionList: FC<DefinitionListProps> = ({
 
                   if (isInternal) {
                     return (
-                      <Link href={href} passHref>
-                        <Cell variant="small" as="a">
-                          {definition}
-                        </Cell>
-                      </Link>
+                      // FIXME:
+                      // @ts-ignore
+                      <Cell variant="small" as={Link} href={href}>
+                        {definition}
+                      </Cell>
                     );
                   }
 

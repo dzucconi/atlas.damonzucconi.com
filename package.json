@@ -10,13 +10,13 @@
     "gql": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "@auspices/eos": "^4.2.1",
+    "@auspices/eos": "^5.0.0",
     "graphql": "^16.5.0",
-    "next": "^12.2.5",
+    "next": "^13.1.0",
     "next-urql": "^3.3.3",
     "qs": "^6.11.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "styled-components": "^5.3.6",
     "styled-reset": "^4.4.3",
     "styled-system": "^5.1.5",
@@ -35,7 +35,7 @@
     "@types/styled-system": "^5.1.15",
     "@types/styled-system__theme-get": "^5.0.2",
     "eslint": "8.21.0",
-    "eslint-config-next": "12.2.5",
+    "eslint-config-next": "^13.1.0",
     "typescript": "4.7.4"
   }
 }
