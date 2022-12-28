@@ -40,7 +40,7 @@ export const Pagination: React.FC<PaginationProps & { href: string }> = ({
               {...page}
               href={{
                 pathname: href,
-                query: { page: page.page, per: rest.per },
+                query: { page: page.page, per },
               }}
             />
           );
@@ -54,7 +54,7 @@ export const Pagination: React.FC<PaginationProps & { href: string }> = ({
             {...page}
             href={{
               pathname: href,
-              query: { page: page.page, per: rest.per },
+              query: { page: page.page, per },
             }}
           />
         );
@@ -68,7 +68,7 @@ export const Pagination: React.FC<PaginationProps & { href: string }> = ({
               {...page}
               href={{
                 pathname: href,
-                query: { page: page.page, per: rest.per },
+                query: { page: page.page, per },
               }}
             />
           );
