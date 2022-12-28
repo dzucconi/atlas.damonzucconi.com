@@ -14,13 +14,16 @@ import { usePagination } from "../../lib/usePagination";
 export const Pagination: React.FC<PaginationProps & { href: string }> = ({
   total,
   page,
+  per,
   href,
   ...rest
 }) => {
   const { head, center, tail, totalPages } = _usePagination({
     currentPage: page,
+    per,
     total,
   });
+
   const { setTotal } = usePagination();
 
   useEffect(() => setTotal(total), [setTotal, total]);
