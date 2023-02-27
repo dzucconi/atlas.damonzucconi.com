@@ -2,7 +2,7 @@ import React, { FC, useEffect } from "react";
 import Link, { LinkProps } from "next/link";
 import {
   Page as _Page,
-  PageProps,
+  PageProps as _PageProps,
   Pagination as _Pagination,
   PaginationPage,
   PaginationProps,
@@ -18,11 +18,12 @@ export const Pagination: React.FC<PaginationProps & { href: string }> = ({
   href,
   ...rest
 }) => {
-  const { head, center, tail, totalPages } = _usePagination({
-    currentPage: page,
-    per,
-    total,
-  });
+  const { current, head, leftSurrounding, rightSurrounding, tail, totalPages } =
+    _usePagination({
+      currentPage: page,
+      per,
+      total,
+    });
 
   const { setTotal } = usePagination();
 
@@ -35,27 +36,50 @@ export const Pagination: React.FC<PaginationProps & { href: string }> = ({
       <Stack direction="horizontal">
         {head.map((page) => {
           return (
-            <DefaultPage
+            <Page
               key={page.page}
-              {...page}
               href={{
                 pathname: href,
                 query: { page: page.page, per },
               }}
+              {...page}
             />
           );
         })}
       </Stack>
 
-      {center.map((page) => {
+      {leftSurrounding.map((page) => {
         return (
-          <DefaultPage
+          <Page
             key={page.page}
-            {...page}
             href={{
               pathname: href,
               query: { page: page.page, per },
             }}
+            display={["none", "none", "block"]}
+            {...page}
+          />
+        );
+      })}
+
+      <Page
+        href={{
+          pathname: href,
+          query: { page, per },
+        }}
+        {...current}
+      />
+
+      {rightSurrounding.map((page) => {
+        return (
+          <Page
+            key={page.page}
+            href={{
+              pathname: href,
+              query: { page: page.page, per },
+            }}
+            display={["none", "none", "block"]}
+            {...page}
           />
         );
       })}
@@ -63,13 +87,13 @@ export const Pagination: React.FC<PaginationProps & { href: string }> = ({
       <Stack direction="horizontal">
         {tail.map((page) => {
           return (
-            <DefaultPage
+            <Page
               key={page.page}
-              {...page}
               href={{
                 pathname: href,
                 query: { page: page.page, per },
               }}
+              {...page}
             />
           );
         })}
@@ -78,13 +102,13 @@ export const Pagination: React.FC<PaginationProps & { href: string }> = ({
   );
 };
 
-type DefaultPageProps = PaginationPage &
-  Omit<PageProps, "onClick" | "children"> & {
+type PageProps = PaginationPage &
+  Omit<_PageProps, "onClick" | "children"> & {
     onClick?(page: number): void;
     href: LinkProps["href"];
   };
 
-const DefaultPage: FC<DefaultPageProps> = ({
+const Page: FC<PageProps> = ({
   page,
   label,
   disabled,
