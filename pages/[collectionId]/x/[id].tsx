@@ -60,7 +60,7 @@ const Show: FC = () => {
           : {})}
       />
 
-      <Stack spacing={4} flex={1}>
+      <Stack spacing={0} flex={1}>
         <Stack>
           <Stack direction={["vertical", "vertical", "horizontal"]}>
             <Box width={["100%", "100%", "auto"]}>
@@ -168,7 +168,7 @@ const Show: FC = () => {
           display="flex"
           width="100%"
           alignItems="center"
-          justifyContent="center"
+          justifyContent={["flex-start", "flex-start", "center"]}
           flexDirection="column"
           flex={1}
         >
