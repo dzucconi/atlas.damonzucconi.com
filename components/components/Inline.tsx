@@ -1,17 +1,9 @@
 import { gql } from "urql";
-import {
-  Box,
-  BoxProps,
-  File,
-  HTML,
-  ResponsiveImage,
-  Stack,
-} from "@auspices/eos";
+import { Box, BoxProps, File, HTML, ResponsiveImage } from "@auspices/eos";
 import { FC } from "react";
 import { InlineFragment } from "../../generated/graphql";
 import { simpleFormat } from "../../lib/simpleFormat";
 import { InlineCollection } from "./InlineCollection";
-import Link from "next/link";
 import { UrlBar } from "../core/UrlBar";
 
 type InlineProps = BoxProps & {

@@ -9,6 +9,7 @@ import { Loading } from "../../components/core/Loading";
 import { Meta } from "../../components/core/Meta";
 import { Pagination } from "../../components/core/Pagination";
 import { usePageQuery } from "../../generated/graphql";
+import { Metadata } from "../../components/core/Metadata";
 
 const Page: NextPage = () => {
   const {
@@ -73,21 +74,7 @@ const Page: NextPage = () => {
             href={`/page/${collectionId}`}
           />
 
-          {collection.metadata && (
-            <Stack>
-              {Object.entries(collection.metadata).map(([term, definition]) => (
-                <Split key={term}>
-                  <Cell height="100%" alignItems="flex-start" variant="small">
-                    {term}
-                  </Cell>
-
-                  <Cell height="100%" alignItems="flex-start" variant="small">
-                    {definition as string}
-                  </Cell>
-                </Split>
-              ))}
-            </Stack>
-          )}
+          {collection.metadata && <Metadata metadata={collection.metadata} />}
         </Stack>
 
         <Stack spacing={8}>

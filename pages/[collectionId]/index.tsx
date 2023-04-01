@@ -6,6 +6,7 @@ import { gql } from "urql";
 import { BottomNav } from "../../components/core/BottomNav";
 import { Loading } from "../../components/core/Loading";
 import { Meta } from "../../components/core/Meta";
+import { Metadata } from "../../components/core/Metadata";
 import { Pagination } from "../../components/core/Pagination";
 import { Thumbnail } from "../../components/core/Thumbnail";
 import { useCollectionQuery } from "../../generated/graphql";
@@ -72,21 +73,7 @@ const Collection: NextPage = () => {
             href={`/${collectionId}`}
           />
 
-          {collection.metadata && (
-            <Stack>
-              {Object.entries(collection.metadata).map(([term, definition]) => (
-                <Split key={term}>
-                  <Cell height="100%" alignItems="flex-start" variant="small">
-                    {term}
-                  </Cell>
-
-                  <Cell height="100%" alignItems="flex-start" variant="small">
-                    {definition as string}
-                  </Cell>
-                </Split>
-              ))}
-            </Stack>
-          )}
+          {collection.metadata && <Metadata metadata={collection.metadata} />}
         </Stack>
 
         <Grid>
