@@ -44,7 +44,7 @@ export const Inline: FC<InlineProps> = ({ entity, ...rest }) => {
 
           case "Link":
             return (
-              <UrlBar href={entity.url} target="_blank">
+              <UrlBar href={entity.url} target="_blank" mx={[4, 4, 0]}>
                 {entity.url}
               </UrlBar>
             );
@@ -55,6 +55,7 @@ export const Inline: FC<InlineProps> = ({ entity, ...rest }) => {
                 html={simpleFormat(entity.body)}
                 maxWidth="65ch"
                 fontSize={4}
+                mx={[4, 4, 0]}
               />
             );
 

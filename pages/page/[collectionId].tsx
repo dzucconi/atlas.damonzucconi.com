@@ -99,6 +99,7 @@ const Page: NextPage = () => {
                 {content.metadata && (
                   <DefinitionList
                     maxWidth="65ch"
+                    mx={[4, 4, 0]}
                     definitions={Object.entries(content.metadata).map(
                       ([term, definition]) => ({
                         term,
