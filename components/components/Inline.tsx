@@ -1,10 +1,18 @@
 import { gql } from "urql";
-import { Box, BoxProps, File, HTML, ResponsiveImage } from "@auspices/eos";
+import {
+  Box,
+  BoxProps,
+  File,
+  HTML,
+  ResponsiveImage,
+  Stack,
+} from "@auspices/eos";
 import { FC } from "react";
 import { InlineFragment } from "../../generated/graphql";
 import { simpleFormat } from "../../lib/simpleFormat";
 import { InlineCollection } from "./InlineCollection";
 import { UrlBar } from "../core/UrlBar";
+import { DefinitionList } from "../core/DefinitionList";
 
 type InlineProps = BoxProps & {
   entity: InlineFragment;
@@ -17,21 +25,34 @@ export const Inline: FC<InlineProps> = ({ entity, ...rest }) => {
         switch (entity.__typename) {
           case "Image":
             return (
-              <ResponsiveImage
-                placeholder={entity.placeholder.urls.src}
-                srcs={[
-                  entity.thumb.srcs._1x,
-                  entity.thumb.srcs._2x,
-                  entity.thumb.srcs._3x,
-                ]}
-                aspectWidth={entity.thumb.width}
-                aspectHeight={entity.thumb.height}
-                maxWidth={entity.thumb.width}
-                maxHeight={entity.thumb.height}
-                alt={entity.label}
-                indicator
-                loading="lazy"
-              />
+              <Stack spacing={4}>
+                <Box as="a" href={entity.url} target="_blank" display="block">
+                  <ResponsiveImage
+                    placeholder={entity.placeholder.urls.src}
+                    srcs={[
+                      entity.thumb.srcs._1x,
+                      entity.thumb.srcs._2x,
+                      entity.thumb.srcs._3x,
+                    ]}
+                    aspectWidth={entity.thumb.width}
+                    aspectHeight={entity.thumb.height}
+                    maxWidth={entity.thumb.width}
+                    maxHeight={entity.thumb.height}
+                    alt={entity.label}
+                    indicator
+                    loading="lazy"
+                  />
+                </Box>
+
+                <DefinitionList
+                  definitions={[
+                    {
+                      term: "name",
+                      definition: entity.label,
+                    },
+                  ]}
+                />
+              </Stack>
             );
 
           case "Link":

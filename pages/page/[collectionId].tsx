@@ -83,16 +83,19 @@ const Page: NextPage = () => {
               <Stack key={content.id} spacing={4}>
                 <Inline entity={content.entity} />
 
-                {content.metadata && (
+                {(content.metadata ||
+                  content.entity.__typename === "Image") && (
                   <DefinitionList
                     maxWidth="65ch"
                     mx={[4, 4, 0]}
-                    definitions={Object.entries(content.metadata).map(
-                      ([term, definition]) => ({
-                        term,
-                        definition: `${definition}`,
-                      })
-                    )}
+                    definitions={[
+                      ...Object.entries(content.metadata).map(
+                        ([term, definition]) => ({
+                          term,
+                          definition: `${definition}`,
+                        })
+                      ),
+                    ]}
                   />
                 )}
               </Stack>

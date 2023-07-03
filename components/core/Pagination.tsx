@@ -37,7 +37,7 @@ export const Pagination: React.FC<PaginationProps & { href: string }> = ({
         {head.map((page) => {
           return (
             <Page
-              key={page.page}
+              key={page.label}
               href={{
                 pathname: href,
                 query: { page: page.page, per },
@@ -51,7 +51,7 @@ export const Pagination: React.FC<PaginationProps & { href: string }> = ({
       {leftSurrounding.map((page) => {
         return (
           <Page
-            key={page.page}
+            key={page.label}
             href={{
               pathname: href,
               query: { page: page.page, per },
@@ -73,7 +73,7 @@ export const Pagination: React.FC<PaginationProps & { href: string }> = ({
       {rightSurrounding.map((page) => {
         return (
           <Page
-            key={page.page}
+            key={page.label}
             href={{
               pathname: href,
               query: { page: page.page, per },
@@ -88,7 +88,7 @@ export const Pagination: React.FC<PaginationProps & { href: string }> = ({
         {tail.map((page) => {
           return (
             <Page
-              key={page.page}
+              key={page.label}
               href={{
                 pathname: href,
                 query: { page: page.page, per },

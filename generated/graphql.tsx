@@ -84,6 +84,7 @@ export type CollectionContentArgs = {
 
 
 export type CollectionContentsArgs = {
+  entityType?: InputMaybe<EntityTypes>;
   metadata?: InputMaybe<Scalars['JSON']>;
   page?: InputMaybe<Scalars['Int']>;
   per?: InputMaybe<Scalars['Int']>;
@@ -181,6 +182,14 @@ export enum ContentsSort {
 }
 
 export type Entity = Attachment | Collection | Image | Link | Text;
+
+export enum EntityTypes {
+  Attachment = 'ATTACHMENT',
+  Collection = 'COLLECTION',
+  Image = 'IMAGE',
+  Link = 'LINK',
+  Text = 'TEXT'
+}
 
 export type Image = {
   __typename?: 'Image';
