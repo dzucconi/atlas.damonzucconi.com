@@ -6,6 +6,8 @@ interface MetadataProps {
 }
 
 export const Metadata: FC<MetadataProps> = ({ metadata }) => {
+  if (Object.keys(metadata).length === 0) return null;
+
   return (
     <Stack>
       {Object.entries(metadata).map(([term, definition]) => {

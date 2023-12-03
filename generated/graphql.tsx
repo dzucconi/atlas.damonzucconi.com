@@ -380,7 +380,7 @@ export type CollectionContentQueryVariables = Exact<{
 }>;
 
 
-export type CollectionContentQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, slug: string, title: string, content: { __typename?: 'Content', id: number, next?: { __typename?: 'Content', id: number } | null, previous?: { __typename?: 'Content', id: number } | null, entity: { __typename: 'Attachment', id: number, name: string } | { __typename: 'Collection', id: number, slug: string, name: string } | { __typename: 'Image', id: number, width: number, height: number, name: string, originalUrl: string, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, resized: { __typename?: 'ResizedImage', width: number, height: number, urls: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } }, meta: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } } } | { __typename: 'Link', id: number, name: string, url: string } | { __typename: 'Text', id: number, body: string, name: string } } } } };
+export type CollectionContentQuery = { __typename?: 'ObjectQuery', root: { __typename?: 'Collection', collection: { __typename?: 'Collection', id: number, slug: string, title: string, content: { __typename?: 'Content', id: number, metadata: any, next?: { __typename?: 'Content', id: number } | null, previous?: { __typename?: 'Content', id: number } | null, entity: { __typename: 'Attachment', id: number, name: string } | { __typename: 'Collection', id: number, slug: string, name: string } | { __typename: 'Image', id: number, width: number, height: number, name: string, originalUrl: string, placeholder: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } }, resized: { __typename?: 'ResizedImage', width: number, height: number, urls: { __typename?: 'RetinaImage', _1x: string, _2x: string, _3x: string } }, meta: { __typename?: 'ResizedImage', urls: { __typename?: 'RetinaImage', src: string } } } | { __typename: 'Link', id: number, name: string, url: string } | { __typename: 'Text', id: number, body: string, name: string } } } } };
 
 export type IndexQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -663,6 +663,7 @@ export const CollectionContentQueryDocument = gql`
           previous {
             id
           }
+          metadata
           entity {
             __typename
             ... on Attachment {

@@ -20,6 +20,7 @@ import { useCollectionContentQuery } from "../../../generated/graphql";
 import { simpleFormat } from "../../../lib/simpleFormat";
 import { withUrql } from "../../../lib/urql";
 import { usePagination } from "../../../lib/usePagination";
+import { Metadata } from "../../../components/core/Metadata";
 
 const Show: FC = () => {
   const {
@@ -46,7 +47,7 @@ const Show: FC = () => {
     root: {
       collection: {
         title,
-        content: { entity, next, previous },
+        content: { metadata, entity, next, previous },
       },
     },
   } = data;
@@ -162,6 +163,8 @@ const Show: FC = () => {
               )}
             </Box>
           </Stack>
+
+          <Metadata metadata={metadata} />
         </Stack>
 
         <Box
@@ -235,6 +238,7 @@ const COLLECTION_CONTENT_QUERY = gql`
             previous {
               id
             }
+            metadata
             entity {
               __typename
               ... on Attachment {
